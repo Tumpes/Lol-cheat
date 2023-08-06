@@ -142,7 +142,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::SetNextWindowPos(ImVec2(25, 25));
 
 		ImGui::Checkbox("Show Circle", &Circle);
-		ImGui::Checkbox("Autosmite on", &autosmite);
+		ImGui::Checkbox("Autosmite on", &Globals::autosmite);
 
 		ImGui::End();
 

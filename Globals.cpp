@@ -6,8 +6,7 @@ namespace Globals {
 	Object* localPlayer;
 	Object** MinionList;
 	int* pMinionListLength;
-	bool autosmiteClick;
-	Object* Dragon;
+	bool autosmite;
 
 	Vector2 GetWindowDimensions() {
 		uint64_t RendererAddress = *reinterpret_cast<uint64_t*>(Globals::BaseAddress + Offsets::Renderer);

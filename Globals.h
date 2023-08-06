@@ -12,8 +12,8 @@ namespace Globals {
 	extern Object* localPlayer;
 	extern Object** MinionList;
 	extern int* pMinionListLength;
-	extern bool autosmiteClick;
-	extern Object* Dragon;
+	extern bool autosmite;
+
 
 	extern Vector2 GetWindowDimensions();
 

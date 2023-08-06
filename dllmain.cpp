@@ -347,7 +347,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 			logToFile(logfile, intToString((int)GetSmiteDamage()));
 		}
 
-		if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0) {
+		if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0 && Globals::autosmite & 1) {
 
 			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
 			Vector3 DragonPos = Dragon->GetPos();

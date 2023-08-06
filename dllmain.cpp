@@ -53,84 +53,6 @@ HMODULE myhModule;
 //    return hex_int;
 //}
 
-inline uint64_t GetDragonIndex(CMinionManager* MinionManager) {
-	//std::cout << *MinionListLength << std::endl;
-
-	std::ofstream logfile;
-
-	uint64_t DragonIndex = 0xDEADBEEFF00D;
-	const std::vector<std::string> Dragons{ "SRU_Dragon_Air", "SRU_Dragon_Earth", "SRU_Dragon_Water", "SRU_Dragon_Fire", "SRU_Dragon_Hextech", "SRU_Dragon_Chemtech", "SRU_Baron", "SRU_RiftHerald", "SRU_Dragon_Elder" };
-	for (uint64_t i = 0; i < *Globals::pMinionListLength; i++) {
-
-
-		Object* Minion = MinionManager->getMinionByIndex((int)i);
-		if (Minion == nullptr) break;
-		char* pMinionName = Minion->GetName();
-		if (Minion == nullptr) break;
-		std::string str(pMinionName);
-		if (Minion == nullptr) break;
-		Vector3 MinionPos = Minion->GetPos();
-
-		//if (console) {
-		//    std::cout << "pMinionName: " << pMinionName << std::endl;
-		//    std::cout << "MinionNameLength: " << *MinionNameLength << std::endl;
-		//}
-		// logi tähän
-		//std::cout << MinionNameLength << std::endl;
-
-		Object* me = Globals::localPlayer;
-
-
-
-		//logfile2.open("log-dragon.txt", std::ios_base::app);
-		//logfile2 << "------------------\n";
-		//logfile2 << "\Time = ";
-		//logfile2 << *reinterpret_cast<int*>(BaseAddress + Offsets::GameTime);
-		//logfile2 << "MinionName:" << &name;
-		//logfile2 << "\n";
-		//logfile2 << "MinionNameLength:" << &MinionNameLength;
-		//logfile2 << "\n";
-		//logfile2.close();
-		//std::cout << *Dragonx << "  -  " << *Dragony << std::endl;
-		float DistanceToDragon = (float)sqrt(pow((MinionPos.x - me->GetPos().x), 2) + pow((MinionPos.z - me->GetPos().z), 2));
-		//std::cout << "name: " << name << std::endl;
-		//std::cout << "Dragons: " << typeid(Dragons[0]).name() << "\n" << "Name: " << typeid(name).name() << "\n" << std::endl;
-		//if(console)std::cout << name << std::endl;
-		auto it = std::find(Dragons.begin(), Dragons.end(), pMinionName);
-		//logToFile(logfile, intToString((uint64_t)Minion));
-		//Sleep(1000000);
-		if (it != Dragons.end() && DistanceToDragon < 500.0f) {
-			//std::cout << "Distance: " << DistanceToDragon << std::endl;
-			//std::cout << "Dx: " << *Dragonx << std::endl;
-			//std::cout << "Dy: " << *Dragony << std::endl;
-			//std::cout << "Px: " << *Playerx << std::endl;
-			//std::cout << "Py: " << *Playery << std::endl;
-			DragonIndex = i;
-			//std::cout << DragonIndex << std::endl;
-		}
-		//if (dbgToFile && (asd % 20 == 0)) {
-		//	std::ofstream logfile2;
-		//	logfile2.open("log-dragon.txt", std::ios_base::app);
-		//	logfile2 << "------------------\n";
-		//	logfile2 << "\Time = ";
-		//	logfile2 << *reinterpret_cast<int*>(BaseAddress + Offsets::GameTime);
-		//	logfile2 << "\nDistanceToDragon = ";
-		//	logfile2 << DistanceToDragon;
-		//	logfile2 << "\n";
-		//	logfile2 << "name = ";
-		//	logfile2 << name;
-		//	logfile2 << "\nMinionNameLength = ";
-		//	logfile2 << *MinionNameLength;
-		//	logfile2 << "\nDragonIndex = ";
-		//	logfile2 << DragonIndex;
-		//	logfile2 << "\n";
-		//	logfile2.close();
-		//}
-	}
-
-	return DragonIndex;
-}
-
 //class Chat {
 //public:
 //    void printChat(const char* message) noexcept
@@ -322,8 +244,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//if (GetAsyncKeyState(VK_HOME)) {
 		//	CastSpellWrapper((uint64_t*)HudInstanceSpellInfo, (uint64_t*)(HudInstanceSpellInfo + 8));
 		//}
-
-		uint64_t DragonIndex = GetDragonIndex(MinionManager);
+		
 		//Minion* Minion = MinionManager->getMinionByIndex(5);
 		//std::cout << Minion << std::endl;
 			//std::ofstream logfile2;
@@ -343,11 +264,17 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//}
 		if (GetAsyncKeyState(VK_PRIOR)) {
 			logToFile(logfile, "not in autosmite func");
-			logToFile(logfile, intToString((DragonIndex)));
+			//logToFile(logfile, intToString((DragonIndex)));
 			logToFile(logfile, intToString((int)GetSmiteDamage()));
 		}
 
-		if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0 && Globals::autosmite & 1) {
+		float GameTime = *(float*)(Globals::BaseAddress + Offsets::GameTime);
+
+		uint64_t DragonIndex = 0xDEADBEEFF00D;
+
+		if (GameTime > 180.0f) DragonIndex = MinionManager->GetDragonIndex();
+
+		if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0 && Globals::autosmite & 1 && GameTime > 180.0f ) {
 
 			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
 			Vector3 DragonPos = Dragon->GetPos();

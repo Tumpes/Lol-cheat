@@ -23,3 +23,5 @@ private:
 	void     MultiplyMatrices(float* out, float* a, int row1, int col1, float* b, int row2, int col2);
 
 };
+
+extern GameRenderer renderer;

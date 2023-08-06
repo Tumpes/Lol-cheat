@@ -5,7 +5,6 @@
 #include "Vector.h"
 #include "Object.h"
 #include <string>
-#include "Renderer.h"
 
 namespace Globals {
 
@@ -13,7 +12,8 @@ namespace Globals {
 	extern Object* localPlayer;
 	extern Object** MinionList;
 	extern int* pMinionListLength;
-	extern bool autosmite;
+	extern bool autosmiteClick;
+	extern Object* Dragon;
 
 	extern Vector2 GetWindowDimensions();
 

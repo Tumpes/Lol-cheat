@@ -27,7 +27,6 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include <d3d11.h>
 #include "Kiero/minhook/include/MinHook.h"
-#include <chrono>
 
 #include "Menu.h"
 
@@ -298,8 +297,6 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 	logfile << "adsadasdasdadsadas";
 	//logToFile(logfile, intToString((uint64_t)MinionListLength));
-
-	GameRenderer renderer;
 
 
 

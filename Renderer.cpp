@@ -71,3 +71,5 @@ Vector2 GameRenderer::WorldToScreen(const Vector3 pos) {
 
 	return out;
 }
+
+GameRenderer renderer;

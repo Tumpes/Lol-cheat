@@ -31,5 +31,5 @@ public:
 	static uint64_t HudInstance;
 	static uint64_t HudInstanceSpellInfo;
 	static uint64_t PingNet;
-
+	static uint64_t SpellSlotTime;
 };

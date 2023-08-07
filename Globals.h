@@ -34,6 +34,8 @@ namespace Funcs {
 
 	void SendChat(std::string);
 
+	float GetGameTime();
+
 	//typedef bool(__fastcall* fnCastSpellWrapper)(uint64_t* hudSpellInfo, uint64_t* spellInfo);
 	//extern fnCastSpellWrapper CastSpellWrapper;
 }

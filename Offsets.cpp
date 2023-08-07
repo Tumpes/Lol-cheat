@@ -32,3 +32,4 @@ uint64_t Offsets::fnGetBoundingRadius = 0x1f99b0;
 uint64_t Offsets::SpellInfo = (uint64_t)0x130; //64 a
 uint64_t Offsets::ObjSpellBook = (uint64_t)0x29E8; //64   spellbook => instance
 uint64_t Offsets::SpellInstance = (uint64_t)0x6D0; //64   spellslot => instance tai spellbookspellslot
+uint64_t Offsets::SpellSlotTime = (uint64_t)0x30; // spell + 30

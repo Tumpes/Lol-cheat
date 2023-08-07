@@ -42,6 +42,8 @@ std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clo
 
 
 void DrawCircle(ImDrawList* canvas, const Vector3& worldPos, float radius, bool filled, int numPoints, ImColor color, float thickness) {
+	// takes world units as radius input
+	//
 
 	if (numPoints >= 200)
 		return;
@@ -87,9 +89,9 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			return oPresent(pSwapChain, SyncInterval, Flags);
 	}
 
-		/*if (autosmite & 1 && *(uint64_t*)(Globals::BaseAddress + Offsets::GameTime) - oldgametime > 1000 && Globals::localPlayer->IsAlive()) {
+		if (autosmite & 1 && *(uint64_t*)(Globals::BaseAddress + Offsets::GameTime) - oldgametime > 1000 && Globals::localPlayer->IsAlive()) {
 		
-			CMinionManager* MinionManager = new CMinionManager();
+			CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
 			uint64_t DragonIndex = MinionManager->GetDragonIndex();
 	
 			if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0) {
@@ -107,12 +109,19 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				if (GetSmiteSlot() == 4) key = 33;
 				else if (GetSmiteSlot() == 5) key = 32;
 				if (DistanceToDragon < 500 && (DragonHealth <= GetSmiteDamage()) && DragonHealth > 0 && IsPointOnScreen(ScreenPos)) {
-					ClickAt(ScreenPos, key);
+
+
+						BlockInput(true);
+						POINT originalPos = {};
+						GetCursorPos(&originalPos);
+						SetCursorPos(pos.x, pos.y);
+						SendKey(33);
+						SetCursorPos(originalPos.x, originalPos.y);
 				}
 			}
 			oldgametime = *(uint64_t*)(Globals::BaseAddress + Offsets::GameTime);
 			delete MinionManager;
-		}*/
+		}
 	
 	if (!keyPressed && GetAsyncKeyState(VK_NEXT) & 1)
 	{
@@ -152,7 +161,16 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	if (Circle) {
 		ImGui::Begin("##kebab", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
 		auto draw = ImGui::GetBackgroundDrawList();
-		DrawCircle(draw, Globals::localPlayer->GetPos(), Globals::localPlayer->GetRealAttackRange(), 0, 100, IM_COL32(0, 0, 255, 255), 1);
+		DrawCircle(draw, Globals::localPlayer->GetPos(), Globals::localPlayer->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
+
+		Vector2 Screenpos = renderer.WorldToScreen(Globals::localPlayer->GetPos());
+
+
+
+		const char* text = "kebab";
+
+		draw->AddText(ImVec2(Screenpos.x - 100, Screenpos.y - 200), IM_COL32(255, 255, 255, 255), text);
+
 		ImGui::End();
 	}
 

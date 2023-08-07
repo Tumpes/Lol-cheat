@@ -11,7 +11,8 @@ class CMinionManager {
 public:
 
 	Object* getMinionByIndex(int index) {
-		return reinterpret_cast<Object*>(Globals::MinionList[index]);
+		index = min(index, this->GetListSize());
+		return *(Object**)(*(uint64_t*)((uint64_t)this + 0x8) + (sizeof(uint64_t) * index));
 	}
 
 	inline uint64_t GetDragonIndex() {
@@ -46,11 +47,9 @@ public:
 	return DragonIndex;
 }
 
-};
-
-class Spells {
-public:
-	static Spell* getSpellByIndex(int index) {
-		return (Spell*)*reinterpret_cast<uint64_t*>(Globals::localPlayer + Offsets::ObjSpellBook + Offsets::SpellInstance + (0x8 * index));
+	int GetListSize()
+	{
+		return *(int*)((uint64_t)this + 0x10);
 	}
+
 };

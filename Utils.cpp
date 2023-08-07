@@ -16,8 +16,10 @@ float GetSmiteDamage() {
 
     // -------------------------
 
-    std::string spell1Name = Spells::getSpellByIndex(4)->GetSpellInfo()->GetSpellName();
-    std::string spell2Name = Spells::getSpellByIndex(5)->GetSpellInfo()->GetSpellName();
+    Object* me = Globals::localPlayer;
+
+    std::string spell1Name = me->getSpellByIndex(4)->GetSpellInfo()->GetSpellName();
+    std::string spell2Name = me->getSpellByIndex(5)->GetSpellInfo()->GetSpellName();
 
     //Funcs::PrintChat(spell1Name);
     //Funcs::PrintChat(spell2Name);
@@ -40,15 +42,17 @@ int GetSmiteSlot() {
 
     int SmiteSlot = 0;
 
-    std::string spell1Name = Spells::getSpellByIndex(4)->GetSpellInfo()->GetSpellName();
-    std::string spell2Name = Spells::getSpellByIndex(5)->GetSpellInfo()->GetSpellName();
+    Object* me = Globals::localPlayer;
+
+    std::string spell1Name = me->getSpellByIndex(4)->GetSpellInfo()->GetSpellName();
+    std::string spell2Name = me->getSpellByIndex(5)->GetSpellInfo()->GetSpellName();
 
     if (spell1Name == "SummonerSmite" || spell1Name == "S5_SummonerSmitePlayerGanker" || spell1Name == "SummonerSmiteAvatarUtility" || spell1Name == "Smite") {
         SmiteSlot = 4;
     }
     else if (spell2Name == "SummonerSmite" || spell2Name == "S5_SummonerSmitePlayerGanker" || spell2Name == "SummonerSmiteAvatarUtility" || spell2Name == "Smite") {
         SmiteSlot = 5;
-    }
+    }                               
 
     return SmiteSlot;
 }

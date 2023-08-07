@@ -61,4 +61,8 @@ namespace Funcs {
 		ingame_SendChat(*(uint64_t*)(Globals::BaseAddress + Offsets::PingNet), message.c_str(), 0x1);  //Pingnet, message, ChatType - 1 = all,  2 = team,  3 = party
 	}
 	//fnCastSpellWrapper CastSpellWrapper = (fnCastSpellWrapper)(Globals::BaseAddress + Offsets::fCastSpellWrapper);
+
+	float GetGameTime() {
+		return *(float*)(Globals::BaseAddress + Offsets::GameTime);
+	}
 }

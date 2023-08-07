@@ -108,15 +108,13 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 	logToFile(logfile, "1.1");
 	logToFile(logfile, "1.2");
-	CMinionManager* MinionManager = new CMinionManager();
+	CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
 	logToFile(logfile, "1.3");
 
 	//logToFile(logfile, "asdaasdasdasd");
 	//logToFile(logfile, intToString((uint64_t)Globals::MinionList));
 
 	Funcs::PrintChat(u8"--- H\u00e4kit p\u00e4\u00e4ll\u00e4 ---"); // Häkit päällä
-
-	
 
 	//while (!GetAsyncKeyState(VK_HOME)) {
 	//	Sleep(1000);
@@ -130,8 +128,6 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//ingame_SendChat(*(void**)(Globals::BaseAddress + 0x421F888));
 
 	Object* me = Globals::localPlayer;
-
-	Funcs::PrintChat(me->GetBoundingRadius());
 
 	//const char* pattern = "48 8B 05 ? ? ? ? 48 85 C9 0F 84 ? ? ? ?"; 
 	//std::vector<int> pattern2 = { 0x48, 0x8B, 0x05, -1, -1, -1, -1, 0x48, 0x85, 0xC9, 0x0F, 0x84, -1, -1, -1, -1 };
@@ -224,7 +220,13 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	logfile << "adsadasdasdadsadas";
 	//logToFile(logfile, intToString((uint64_t)MinionListLength));
 
+	CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
+	for (int i = 0; i < HeroManager->GetListSize(); i++) {
+		Funcs::PrintChat(HeroManager->getMinionByIndex(i)->GetName());
+	}
+
+	Funcs::PrintChat(me->getSpellByIndex(0)->GetSpellCooldown());
 
 
 	//         char* pMinionName = (char*)GetPointerAddress(BaseAddress + Offsets::MinionList, { 0x8, (0x8 * (unsigned long)i), Offsets::Name});

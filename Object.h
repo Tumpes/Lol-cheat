@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <string>
 
+class Spell;
+
 class Object {
 public:
 	//bool IsTurret();
@@ -120,6 +122,10 @@ public:
 	float GetRealAttackRange() {
 		return this->GetAttackRange() + this->GetBoundingRadius();
 	}
+
+	Spell* getSpellByIndex(int index) {
+		return (Spell*)*reinterpret_cast<uint64_t*>(this + Offsets::ObjSpellBook + Offsets::SpellInstance + (0x8 * index));
+	} // Järjestys: q w e r passive d f
 };
 
 class SpellInfo {
@@ -140,7 +146,7 @@ public:
 	}
 };
 
-class Spell {
+class Spell {  //In c++ you have to declare(not necessarily define) a class before it is mentioned in another class.
 public:
 	SpellInfo* GetSpellInfo() {
 		return *reinterpret_cast<SpellInfo**>(this + Offsets::SpellInfo);
@@ -148,6 +154,17 @@ public:
 
 	float* GetSpellDamagePtr() {
 		return (float*)(this + 0x90);
+	}
+
+	float GetSpellCooldown() {
+		float readytime = *(float*)(this + Offsets::SpellSlotTime);
+		float gametime = *(float*)((uint64_t)GetModuleHandleA("League of Legends.exe") + Offsets::GameTime);
+
+		if (readytime > gametime) {
+			return readytime - gametime;
+		}
+
+		return 0.0f;
 	}
 };
 

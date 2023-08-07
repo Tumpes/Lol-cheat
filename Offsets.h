@@ -16,15 +16,20 @@ public:
 	static uint64_t fSendChat;
 	static uint64_t fCastSpellWrapper;
 	static uint64_t oChatClient;
+
+
 	static uint64_t Position;
 	static uint64_t Health;
 	static uint64_t Name;
+	static uint64_t IsAlive;
+	static uint64_t ObjAtkRange;
+	static uint64_t fnGetBoundingRadius;
+
 	static uint64_t SpellInfo; 
 	static uint64_t ObjSpellBook;
 	static uint64_t SpellInstance;
 	static uint64_t HudInstance;
 	static uint64_t HudInstanceSpellInfo;
 	static uint64_t PingNet;
-	static uint64_t IsAlive;
 
 };

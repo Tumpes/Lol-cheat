@@ -25,6 +25,8 @@ uint64_t Offsets::IsAlive = (uint64_t)0x328;
 uint64_t Offsets::Position = (uint64_t)0x220; 
 uint64_t Offsets::Health = (uint64_t)0x1058; 
 uint64_t Offsets::Name = (uint64_t)0x35D8; 
+uint64_t Offsets::ObjAtkRange = 0x16B4;
+uint64_t Offsets::fnGetBoundingRadius = 0x1f99b0;
 
 //Spells
 uint64_t Offsets::SpellInfo = (uint64_t)0x130; //64 a

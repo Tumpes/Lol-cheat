@@ -45,6 +45,8 @@ void GameRenderer::LoadFromMem() {
 	MultiplyMatrices(viewProjMatrix, viewMatrix, 4, 4, projMatrix, 4, 4);
 }
 
+
+
 Vector2 GameRenderer::WorldToScreen(const Vector3 pos) {
 
 	GameRenderer::LoadFromMem();
@@ -71,5 +73,7 @@ Vector2 GameRenderer::WorldToScreen(const Vector3 pos) {
 
 	return out;
 }
+
+
 
 GameRenderer renderer;

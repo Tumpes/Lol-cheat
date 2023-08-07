@@ -152,7 +152,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	if (Circle) {
 		ImGui::Begin("##kebab", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
 		auto draw = ImGui::GetBackgroundDrawList();
-		DrawCircle(draw, Globals::localPlayer->GetPos(), size, 0, 100, IM_COL32(0, 0, 255, 255), 1);
+		DrawCircle(draw, Globals::localPlayer->GetPos(), Globals::localPlayer->GetRealAttackRange(), 0, 100, IM_COL32(0, 0, 255, 255), 1);
 		ImGui::End();
 	}
 

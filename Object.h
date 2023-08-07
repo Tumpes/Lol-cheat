@@ -66,9 +66,9 @@ public:
 	//	return *(float*)((DWORD)this + oObjHealth + 0x10);
 	//}
 
-	//float GetAttackRange() {
-	//	return *(float*)((DWORD)this + oObjAtkRange);
-	//}
+	float GetAttackRange() {
+		return *(float*)((uint64_t)this + Offsets::ObjAtkRange);
+	}
 
 	//bool IsVisible() {
 	//	return *(bool*)((DWORD)this + oObjVisibility);
@@ -109,6 +109,17 @@ public:
 	//int GetTeam() {
 	//	return *(int*)((DWORD)this + oObjTeam);
 	//}
+
+	float GetBoundingRadius()
+	{
+		typedef float(__fastcall* fnGetBoundingRadius)(Object* obj);
+		fnGetBoundingRadius _fnGetBoundingRadius = (fnGetBoundingRadius)((uint64_t)GetModuleHandleA("League of Legends.exe") + Offsets::fnGetBoundingRadius);
+		return _fnGetBoundingRadius(this);
+	}
+
+	float GetRealAttackRange() {
+		return this->GetAttackRange() + this->GetBoundingRadius();
+	}
 };
 
 class SpellInfo {

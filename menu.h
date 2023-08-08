@@ -37,6 +37,7 @@ extern bool init;
 extern bool menuOpen;
 extern bool keyPressed;
 extern bool Circle;
+extern bool CoolDownToggle;
 extern float size;
 extern float oldgametime;
 

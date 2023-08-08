@@ -126,6 +126,11 @@ public:
 	Spell* getSpellByIndex(int index) {
 		return (Spell*)*reinterpret_cast<uint64_t*>(this + Offsets::ObjSpellBook + Offsets::SpellInstance + (0x8 * index));
 	} // Järjestys: q w e r passive d f
+
+	float DistanceToObject(Object* obj) {
+		return sqrt(pow((this->GetPos().x - obj->GetPos().x), 2) + pow((this->GetPos().y - obj->GetPos().y), 2) + pow((this->GetPos().z - obj->GetPos().z), 2));
+	}
+
 };
 
 class SpellInfo {

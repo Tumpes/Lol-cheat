@@ -94,7 +94,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		Sleep(300);
 	}
 
-	fninit();
+	Utils::fninit();
 
 	bool init_hook = false;
 	do
@@ -106,10 +106,10 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		}
 	} while (!init_hook);
 
-	logToFile(logfile, "1.1");
-	logToFile(logfile, "1.2");
+	//Utils::logToFile(logfile, "1.1");
+	//Utils::logToFile(logfile, "1.2");
 	CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
-	logToFile(logfile, "1.3");
+	//Utils::logToFile(logfile, "1.3");
 
 	//logToFile(logfile, "asdaasdasdasd");
 	//logToFile(logfile, intToString((uint64_t)Globals::MinionList));
@@ -151,10 +151,10 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	//std::cout << std::hex << BaseAddress << std::endl;
 
 	//const uint64_t Localplayer = *reinterpret_cast<uint64_t*>(BaseAddress + Offsets::LocalPlayer);     //toimii
-	logToFile(logfile, "1.4");
-	int SmiteSlot = GetSmiteSlot();
-	logToFile(logfile, "1.55");
-	logfile << "Smite slot:" << SmiteSlot;
+	//Utils::logToFile(logfile, "1.4");
+	int SmiteSlot = Utils::GetSmiteSlot();
+	//Utils::logToFile(logfile, "1.55");
+	//Utils::logfile << "Smite slot:" << SmiteSlot;
 
 	//Funcs::PrintChat(Spells::getSpellByIndex(4)->GetSpellInfo()->GetSpellName());
 	//Funcs::PrintChat(Spells::getSpellByIndex(4)->GetSpellInfo()->GetSpellNameLength());
@@ -217,16 +217,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	//std::cout << result.x << " - " << result.y << std::endl;
 	//if(result.x > 1920 || result.x < -1920 || result.y < )
 
-	logfile << "adsadasdasdadsadas";
 	//logToFile(logfile, intToString((uint64_t)MinionListLength));
-
-	CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
-
-	for (int i = 0; i < HeroManager->GetListSize(); i++) {
-		Funcs::PrintChat(HeroManager->getMinionByIndex(i)->GetName());
-	}
-
-	Funcs::PrintChat(me->getSpellByIndex(0)->GetSpellCooldown());
 
 
 	//         char* pMinionName = (char*)GetPointerAddress(BaseAddress + Offsets::MinionList, { 0x8, (0x8 * (unsigned long)i), Offsets::Name});
@@ -269,9 +260,9 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//    logfile << "\n";
 		//}
 		if (GetAsyncKeyState(VK_PRIOR)) {
-			logToFile(logfile, "not in autosmite func");
+			Utils::logToFile(logfile, "not in autosmite func");
 			//logToFile(logfile, intToString((DragonIndex)));
-			logToFile(logfile, intToString((int)GetSmiteDamage()));
+			Utils::logToFile(logfile, Utils::intToString((int)Utils::GetSmiteDamage()));
 		}
 
 		float GameTime = *(float*)(Globals::BaseAddress + Offsets::GameTime);
@@ -280,7 +271,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 		if (GameTime > 180.0f) DragonIndex = MinionManager->GetDragonIndex();
 
-		if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0 && Globals::autosmite & 1 && GameTime > 180.0f ) {
+		if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0 && Globals::autosmite & 1 && GameTime > 180.0f ) {
 
 			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
 			Vector3 DragonPos = Dragon->GetPos();
@@ -295,26 +286,26 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 			//logToFile(logfile, intToString(DistanceToDragon));
 			//logToFile(logfile, intToString(*SmiteDamage));
 
-			if (GetAsyncKeyState(VK_PRIOR)) {
-				logToFile(logfile, intToString(DistanceToDragon < 500));
-				logToFile(logfile, intToString((DragonHealth <= GetSmiteDamage())));
-				logToFile(logfile, intToString(DragonHealth > 0));
+			//if (GetAsyncKeyState(VK_PRIOR)) {
+			//	logToFile(logfile, intToString(DistanceToDragon < 500));
+			//	logToFile(logfile, intToString((DragonHealth <= Utils::GetSmiteDamage())));
+			//	logToFile(logfile, intToString(DragonHealth > 0));
 
-				logToFile(logfile, "---------");
+			//	logToFile(logfile, "---------");
 
-				logToFile(logfile, intToString(DistanceToDragon));
-				logToFile(logfile, intToString((DragonHealth)));
-				logToFile(logfile, intToString((GetSmiteDamage())));
-				logToFile(logfile, intToString(DragonHealth));
-				logToFile(logfile, "---------");
-			}
+			//	logToFile(logfile, intToString(DistanceToDragon));
+			//	logToFile(logfile, intToString((DragonHealth)));
+			//	logToFile(logfile, intToString((GetSmiteDamage())));
+			//	logToFile(logfile, intToString(DragonHealth));
+			//	logToFile(logfile, "---------");
+			//}
 
 			int key = 0;
 			//std::cout << SmiteSlot << std::endl;
-			if (SmiteSlot == 4) key = 33;
-			else if (SmiteSlot == 5) key = 32;
-			if (DistanceToDragon < 500 && (DragonHealth <= GetSmiteDamage()) && DragonHealth > 0 && IsPointOnScreen(ScreenPos)) {
-				ClickAt(ScreenPos, key);
+			if (SmiteSlot == 4) key = 32;
+			else if (SmiteSlot == 5) key = 33;
+			if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
+				Smite(ScreenPos, key);
 			}
 			Sleep(5);
 		}

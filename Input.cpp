@@ -35,12 +35,12 @@ void SendKey(int keyID)
     ReleaseKeyScan(keyID);
 }
 
-void ClickAt(Vector2 pos, int key) {
+void Smite(Vector2 pos, int key) {
     BlockInput(true);
     POINT originalPos = {};
     GetCursorPos(&originalPos);
     SetCursorPos(pos.x, pos.y);
-    SendKey(33);
+    SendKey(key);
     SetCursorPos(originalPos.x, originalPos.y);
     BlockInput(false);
 }

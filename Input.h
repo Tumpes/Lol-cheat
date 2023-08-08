@@ -9,4 +9,4 @@ UINT ReleaseKeyScan(WORD scanCode);
 
 void SendKey(int keyID);
 
-void ClickAt(Vector2 pos, int key);
+void Smite(Vector2 pos, int key);

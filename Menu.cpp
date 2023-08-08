@@ -37,6 +37,8 @@ bool Circle = false;
 float size = 400.0f;
 float oldgametime;
 bool autosmite;
+bool CoolDownToggle;
+bool Orbwalker;
 std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
 
 
@@ -94,7 +96,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
 			uint64_t DragonIndex = MinionManager->GetDragonIndex();
 	
-			if (DragonIndex != 0xDEADBEEFF00D && GetSmiteDamage() != 0) {
+			if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
 	
 				Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
 				Vector3 DragonPos = Dragon->GetPos();
@@ -106,9 +108,9 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	
 	
 				int key = 0;
-				if (GetSmiteSlot() == 4) key = 33;
-				else if (GetSmiteSlot() == 5) key = 32;
-				if (DistanceToDragon < 500 && (DragonHealth <= GetSmiteDamage()) && DragonHealth > 0 && IsPointOnScreen(ScreenPos)) {
+				if (Utils::GetSmiteSlot() == 4) key = 33;
+				else if (Utils::GetSmiteSlot() == 5) key = 32;
+				if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
 
 
 						BlockInput(true);
@@ -150,29 +152,65 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::SetNextWindowSize(ImVec2(150.0f, 140.0f), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowPos(ImVec2(25, 25));
 
-		ImGui::Checkbox("Show Circle", &Circle);
-		ImGui::Checkbox("Autosmite on", &Globals::autosmite);
+		ImGui::Checkbox("Show Attack Range", &Circle);
+		ImGui::Checkbox("Autosmite", &Globals::autosmite);
+		ImGui::Checkbox("Show Cooldowns (not enemy)", &CoolDownToggle);
+		ImGui::Checkbox("Orbwalker", &Orbwalker);
 
 		ImGui::End();
 
 
 	}
 
+	ImGui::Begin("##kebab", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
+
+	auto draw = ImGui::GetBackgroundDrawList();
 	if (Circle) {
-		ImGui::Begin("##kebab", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
-		auto draw = ImGui::GetBackgroundDrawList();
-		DrawCircle(draw, Globals::localPlayer->GetPos(), Globals::localPlayer->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
+		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
-		Vector2 Screenpos = renderer.WorldToScreen(Globals::localPlayer->GetPos());
-
-
-
-		const char* text = "kebab";
-
-		draw->AddText(ImVec2(Screenpos.x - 100, Screenpos.y - 200), IM_COL32(255, 255, 255, 255), text);
-
-		ImGui::End();
+		for (int i = 0; i < HeroManager->GetListSize(); i++) {
+			Object* Hero = HeroManager->getMinionByIndex(i);
+			DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
+		}
 	}
+
+	if (CoolDownToggle) {
+		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
+
+		for (int i = 0; i < HeroManager->GetListSize(); i++) {
+			Object* Hero = HeroManager->getMinionByIndex(i);
+			for (int j = 0; j <= 5; j++) {
+				const char* text = "";
+				Vector2 Screenpos = renderer.WorldToScreen(Hero->GetPos());
+				if (j == 0) text = "Q";
+				if (j == 1) text = "W";
+				if (j == 2) text = "E";
+				if (j == 3) text = "R";
+				if (j == 4) text = "D";
+				if (j == 5) text = "F";
+
+				draw->AddText(ImVec2(Screenpos.x - 75 + j * 25, Screenpos.y - 200), IM_COL32(255, 255, 255, 255), text);
+
+				float Cooldown = Hero->getSpellByIndex(j)->GetSpellCooldown();
+				std::string strCooldown = std::to_string((int)std::ceil(Cooldown));
+				const char* ptrCooldown = strCooldown.c_str(); // Now the pointer is valid
+
+				draw->AddText(ImVec2(Screenpos.x - 75 + j * 25, Screenpos.y - 180), IM_COL32(255, 255, 255, 255), ptrCooldown);
+			}
+		}
+	}
+
+	if (Orbwalker) {
+		//CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
+
+		//std::vector<Object*> attackable;
+
+		//for (int i = 0; i < HeroManager->GetListSize(); i++) {
+
+		//}
+	}
+
+	ImGui::End();
 
 	ImGui::Render();
 

@@ -27,6 +27,33 @@ UINT ReleaseKeyScan(WORD scanCode)
     return ret;
 }
 
+void MouseDown(int button) {
+    INPUT input;
+    input.type = INPUT_MOUSE;
+
+    if (button == 0) {  // Left button down
+        input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+    }
+    else if (button == 1) {  // Right button down
+        input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+    }
+
+    SendInput(1, &input, sizeof(INPUT));
+}
+
+void MouseUp(int button) {
+    INPUT input;
+    input.type = INPUT_MOUSE;
+
+    if (button == 0) {  // Left button up
+        input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+    }
+    else if (button == 1) {  // Right button up
+        input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    }
+
+    SendInput(1, &input, sizeof(INPUT));
+}
 
 void SendKey(int keyID)
 {

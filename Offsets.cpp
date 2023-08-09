@@ -24,12 +24,13 @@ uint64_t Offsets::fSendChat = (uint64_t)0x4BAC70;   //    40 55 53 56 57 48 8D 6
 uint64_t Offsets::IsAlive = (uint64_t)0x328;
 uint64_t Offsets::Position = (uint64_t)0x220; 
 uint64_t Offsets::Health = (uint64_t)0x1058; 
+uint64_t Offsets::MaxHealth = (uint64_t)0x1070;
 uint64_t Offsets::Name = (uint64_t)0x35D8; 
-uint64_t Offsets::ObjAtkRange = 0x16B4;
-uint64_t Offsets::fnGetBoundingRadius = 0x1f99b0;
-uint64_t Offsets::ObjVisible = 0x310;
-uint64_t Offsets::ObjTeam = 0x3C;
-uint64_t Offsets::ObjTargetable = 0xEB0;
+uint64_t Offsets::ObjAtkRange = (uint64_t)0x16B4;
+uint64_t Offsets::fnGetBoundingRadius = (uint64_t)0x1f99b0;
+uint64_t Offsets::ObjVisible = (uint64_t)0x310;
+uint64_t Offsets::ObjTeam = (uint64_t)0x3C;
+uint64_t Offsets::ObjTargetable = (uint64_t)0xEB0;
 
 //Spells
 uint64_t Offsets::SpellInfo = (uint64_t)0x130; //64 a

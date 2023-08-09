@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "Utils.h"
 #include "MinionManager.h"
+#include "Globals.h"
 
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
@@ -40,6 +41,7 @@ extern bool Circle;
 extern bool CoolDownToggle;
 extern float size;
 extern float oldgametime;
+extern bool Waitingmouseclick;
 
 extern std::chrono::steady_clock::time_point lastKeyPressTime;
 

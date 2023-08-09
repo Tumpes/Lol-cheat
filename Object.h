@@ -48,6 +48,10 @@ public:
 		return *(float*)((uint64_t)this + Offsets::Health);
 	}
 
+	float GetMaxHealth() {
+		return *(float*)((uint64_t)this + Offsets::MaxHealth);
+	}
+
 	//float GetBaseAttackDamage() {
 	//	return *(float*)((DWORD)this + oObjBaseAtk);
 	//}
@@ -188,4 +192,3 @@ public:
 		return 0.0f;
 	}
 };
-

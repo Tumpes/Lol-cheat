@@ -85,9 +85,6 @@ public:
 	//	return CallVirtual<OriginalFn>(this, 36)(this);
 	//}
 
-	//bool IsEnemyTo(CObject* Obj) {
-	//	if (Obj->GetTeam() == 100 && this->GetTeam() == 200)
-	//		return true;
 
 	//	else if (Obj->GetTeam() == 200 && this->GetTeam() == 100)
 	//		return true;
@@ -108,9 +105,20 @@ public:
 	//	return GetStr((DWORD)this + oObjChampionName);
 	//}
 
-	//int GetTeam() {
-	//	return *(int*)((DWORD)this + oObjTeam);
-	//}
+	int GetTeam() {
+		return *(int*)((uint64_t)this + Offsets::ObjTeam);
+	}
+
+	bool IsEnemy()
+	{
+		Object* localplayer = *(Object**)((uint64_t)GetModuleHandleA("League of Legends.exe") + Offsets::LocalPlayer);
+		return this->GetTeam() != localplayer->GetTeam();
+	}
+
+	bool IsTargetable()
+	{
+		return *(bool*)((uint64_t)this + Offsets::ObjTargetable);
+	}
 
 	float GetBoundingRadius()
 	{
@@ -131,6 +139,14 @@ public:
 		return sqrt(pow((this->GetPos().x - obj->GetPos().x), 2) + pow((this->GetPos().y - obj->GetPos().y), 2) + pow((this->GetPos().z - obj->GetPos().z), 2));
 	}
 
+	bool IsVisible() {
+		return *(bool*)((uint64_t)this + Offsets::ObjVisible);
+	}
+
+	bool IsValidTarget()
+	{
+		return this->IsVisible() && this->IsAlive() && this->IsEnemy() && this->IsTargetable();
+	}
 };
 
 class SpellInfo {

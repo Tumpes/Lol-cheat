@@ -24,6 +24,9 @@ public:
 	static uint64_t IsAlive;
 	static uint64_t ObjAtkRange;
 	static uint64_t fnGetBoundingRadius;
+	static uint64_t ObjVisible;
+	static uint64_t ObjTeam;
+	static uint64_t ObjTargetable;
 
 	static uint64_t SpellInfo; 
 	static uint64_t ObjSpellBook;

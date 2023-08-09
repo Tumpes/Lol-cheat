@@ -201,18 +201,26 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	}
 
 	if (Orbwalker) {
-		//CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
+		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
-		//std::vector<Object*> attackable;
+		std::vector<Object*> attackable;
 
-		//for (int i = 0; i < HeroManager->GetListSize(); i++) {
+		for (int i = 0; i < HeroManager->GetListSize(); i++) {
+			Object* Hero = HeroManager->getMinionByIndex(i);
 
-		//}
+			float distance = Hero->DistanceToObject(Globals::localPlayer);
+			if (distance < Globals::localPlayer->GetRealAttackRange()) {
+
+			}
+		}
+
+
 	}
 
 	ImGui::End();
 
 	ImGui::Render();
+
 
 	pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

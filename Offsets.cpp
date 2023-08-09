@@ -27,6 +27,9 @@ uint64_t Offsets::Health = (uint64_t)0x1058;
 uint64_t Offsets::Name = (uint64_t)0x35D8; 
 uint64_t Offsets::ObjAtkRange = 0x16B4;
 uint64_t Offsets::fnGetBoundingRadius = 0x1f99b0;
+uint64_t Offsets::ObjVisible = 0x310;
+uint64_t Offsets::ObjTeam = 0x3C;
+uint64_t Offsets::ObjTargetable = 0xEB0;
 
 //Spells
 uint64_t Offsets::SpellInfo = (uint64_t)0x130; //64 a

@@ -40,6 +40,7 @@ bool autosmite;
 bool CoolDownToggle;
 bool Orbwalker;
 bool Waitingmouseclick;
+POINT originalPos = {};
 std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
 
 
@@ -92,7 +93,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			return oPresent(pSwapChain, SyncInterval, Flags);
 	}
 
-		if (Globals::autosmite && Globals::localPlayer->IsAlive()) {
+		if (autosmite && Globals::localPlayer->IsAlive()) {
 		
 			CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
 			uint64_t DragonIndex = MinionManager->GetDragonIndex();
@@ -111,21 +112,20 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				int key = 0;
 				if (Utils::GetSmiteSlot() == 4) key = 32;
 				else if (Utils::GetSmiteSlot() == 5) key = 33;
-				if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
+				if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos) && !Waitingmouseclick) {
 					BlockInput(true);
-					POINT originalPos = {};
 					GetCursorPos(&originalPos);
 					SetCursorPos(ScreenPos.x, ScreenPos.y);
 					PressKeyScan(key);
 					if(!Waitingmouseclick) oldgametime = Funcs::GetGameTime();
 					Waitingmouseclick = true;
 					MouseUp(1);
-					SetCursorPos(originalPos.x, originalPos.y);
-					BlockInput(false);
 				}
 				if (Funcs::GetGameTime() - oldgametime > 0.005f && Waitingmouseclick) {
 					Waitingmouseclick = false;
 						ReleaseKeyScan(key);
+						SetCursorPos(originalPos.x, originalPos.y);
+						BlockInput(false);
 				}
 			}
 		}
@@ -158,7 +158,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::SetNextWindowPos(ImVec2(25, 25));
 
 		ImGui::Checkbox("Show Attack Range", &Circle);
-		ImGui::Checkbox("Autosmite", &Globals::autosmite);
+		ImGui::Checkbox("Autosmite", &autosmite);
 		ImGui::Checkbox("Show Cooldowns (not enemy)", &CoolDownToggle);
 		ImGui::Checkbox("Orbwalker", &Orbwalker);
 

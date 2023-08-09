@@ -30,21 +30,6 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-bool init = false;
-bool menuOpen = false;
-bool keyPressed = false;
-bool Circle = false;
-float size = 400.0f;
-float oldgametime;
-bool autosmite;
-bool CoolDownToggle;
-bool Orbwalker;
-bool Waitingmouseclick;
-POINT originalPos = {};
-std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
-
-
-
 void DrawCircle(ImDrawList* canvas, const Vector3& worldPos, float radius, bool filled, int numPoints, ImColor color, float thickness) {
 	// takes world units as radius input
 	//
@@ -69,6 +54,18 @@ void DrawCircle(ImDrawList* canvas, const Vector3& worldPos, float radius, bool 
 		canvas->AddPolyline(points, numPoints, color, true, thickness);
 }
 
+bool init = false;
+bool menuOpen = false;
+bool keyPressed = false;
+bool Circle = false;
+float size = 400.0f;
+float oldgametime;
+bool autosmite;
+bool CoolDownToggle;
+bool Orbwalker;
+bool Waitingmouseclick;
+POINT originalPos = {};
+std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
 
 HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags)
 {
@@ -92,43 +89,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		else
 			return oPresent(pSwapChain, SyncInterval, Flags);
 	}
-
-		if (autosmite && Globals::localPlayer->IsAlive()) {
-		
-			CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
-			uint64_t DragonIndex = MinionManager->GetDragonIndex();
-	
-			if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
-	
-				Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
-				Vector3 DragonPos = Dragon->GetPos();
-				float DragonHealth = Dragon->GetHealth();
-				Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
-				Vector2 ScreenPos = renderer.WorldToScreen(pos);
-	
-				double DistanceToDragon = (double)sqrt(pow((DragonPos.x - Globals::localPlayer->GetPos().x), 2) + pow((DragonPos.z - Globals::localPlayer->GetPos().z), 2));
-	
-	
-				int key = 0;
-				if (Utils::GetSmiteSlot() == 4) key = 32;
-				else if (Utils::GetSmiteSlot() == 5) key = 33;
-				if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos) && !Waitingmouseclick) {
-					BlockInput(true);
-					GetCursorPos(&originalPos);
-					SetCursorPos(ScreenPos.x, ScreenPos.y);
-					PressKeyScan(key);
-					if(!Waitingmouseclick) oldgametime = Funcs::GetGameTime();
-					Waitingmouseclick = true;
-					MouseUp(1);
-				}
-				if (Funcs::GetGameTime() - oldgametime > 0.005f && Waitingmouseclick) {
-					Waitingmouseclick = false;
-						ReleaseKeyScan(key);
-						SetCursorPos(originalPos.x, originalPos.y);
-						BlockInput(false);
-				}
-			}
-		}
 	
 	if (!keyPressed && GetAsyncKeyState(VK_NEXT) & 1)
 	{
@@ -167,9 +127,48 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 	}
 
+	if (autosmite && Globals::localPlayer->IsAlive()) {
+
+		CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
+		uint64_t DragonIndex = MinionManager->GetDragonIndex();
+
+		if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
+
+			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
+			Vector3 DragonPos = Dragon->GetPos();
+			float DragonHealth = Dragon->GetHealth();
+			Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
+			Vector2 ScreenPos = renderer.WorldToScreen(pos);
+
+			double DistanceToDragon = (double)sqrt(pow((DragonPos.x - Globals::localPlayer->GetPos().x), 2) + pow((DragonPos.z - Globals::localPlayer->GetPos().z), 2));
+
+
+			int key = 0;
+			if (Utils::GetSmiteSlot() == 4) key = 32;
+			else if (Utils::GetSmiteSlot() == 5) key = 33;
+			if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos) && !Waitingmouseclick) {
+				BlockInput(true);
+				GetCursorPos(&originalPos);
+				SetCursorPos(ScreenPos.x, ScreenPos.y);
+				PressKeyScan(key);
+				if (!Waitingmouseclick) oldgametime = Funcs::GetGameTime();
+				Waitingmouseclick = true;
+				MouseUp(1);
+			}
+			if (Funcs::GetGameTime() - oldgametime > 0.005f && Waitingmouseclick) {
+				Waitingmouseclick = false;
+				ReleaseKeyScan(key);
+				SetCursorPos(originalPos.x, originalPos.y);
+				BlockInput(false);
+			}
+		}
+	}
+
 	ImGui::Begin("##kebab", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
 
 	auto draw = ImGui::GetBackgroundDrawList();
+
+
 
 	if (Circle) {
 		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
@@ -214,6 +213,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 		for (int i = 0; i < HeroManager->GetListSize(); i++) {
 			Object* Hero = HeroManager->getMinionByIndex(i);
+			if (Hero == Globals::localPlayer) continue;
 
 			float distance = Hero->DistanceToObject(Globals::localPlayer);
 			if (distance < Globals::localPlayer->GetRealAttackRange() && Hero->IsValidTarget()) {
@@ -222,16 +222,17 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 
 		Object* target = nullptr;
-		float highHealth = 0;
+		float lowHealth = 1000000000000; // hp should never he this high so its fine
 
 		for (int i = 0; i < attackable.size(); i++) {
-			if (target == nullptr) highHealth = 0;
-			else highHealth = target->GetHealth();
-
-			if (attackable[i]->GetHealth() > highHealth) target = attackable[i];
-	}
-
-
+			if (attackable[i]->GetHealth() < lowHealth) {
+				lowHealth = attackable[i]->GetHealth();
+				target = attackable[i];
+			}
+	    }
+		if (target != nullptr) {
+			Funcs::PrintChat(target->GetName());
+		}
 
 	}
 

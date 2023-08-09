@@ -7,6 +7,8 @@
 #include <string>
 #include "Globals.h"
 
+
+
 class CMinionManager {
 public:
 

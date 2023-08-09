@@ -39,3 +39,4 @@ namespace Funcs {
 	//typedef bool(__fastcall* fnCastSpellWrapper)(uint64_t* hudSpellInfo, uint64_t* spellInfo);
 	//extern fnCastSpellWrapper CastSpellWrapper;
 }
+

@@ -259,58 +259,58 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//    logfile << "\n";
 		//    logfile << "\n";
 		//}
-		if (GetAsyncKeyState(VK_PRIOR)) {
-			Utils::logToFile(logfile, "not in autosmite func");
-			//logToFile(logfile, intToString((DragonIndex)));
-			Utils::logToFile(logfile, Utils::intToString((int)Utils::GetSmiteDamage()));
-		}
+		//if (GetAsyncKeyState(VK_PRIOR)) {
+		//	Utils::logToFile(logfile, "not in autosmite func");
+		//	//logToFile(logfile, intToString((DragonIndex)));
+		//	Utils::logToFile(logfile, Utils::intToString((int)Utils::GetSmiteDamage()));
+		//}
 
-		float GameTime = *(float*)(Globals::BaseAddress + Offsets::GameTime);
+		//float GameTime = *(float*)(Globals::BaseAddress + Offsets::GameTime);
 
-		uint64_t DragonIndex = 0xDEADBEEFF00D;
+		//uint64_t DragonIndex = 0xDEADBEEFF00D;
 
-		if (GameTime > 180.0f) DragonIndex = MinionManager->GetDragonIndex();
+		//if (GameTime > 180.0f) DragonIndex = MinionManager->GetDragonIndex();
 
-		if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0 && Globals::autosmite & 1 && GameTime > 180.0f ) {
+		//if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0 && Globals::autosmite & 1 && GameTime > 180.0f ) {
 
-			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
-			Vector3 DragonPos = Dragon->GetPos();
-			float DragonHealth = Dragon->GetHealth();
-			Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
-			Vector2 ScreenPos = renderer.WorldToScreen(pos);
-			////std::cout << result.x << " | " << result.y << std::endl;
-			double DistanceToDragon = (double)sqrt(pow((DragonPos.x - me->GetPos().x), 2) + pow((DragonPos.z - me->GetPos().z), 2));
+		//	Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
+		//	Vector3 DragonPos = Dragon->GetPos();
+		//	float DragonHealth = Dragon->GetHealth();
+		//	Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
+		//	Vector2 ScreenPos = renderer.WorldToScreen(pos);
+		//	////std::cout << result.x << " | " << result.y << std::endl;
+		//	double DistanceToDragon = (double)sqrt(pow((DragonPos.x - me->GetPos().x), 2) + pow((DragonPos.z - me->GetPos().z), 2));
 
-			//logToFile(logfile, "stats:");
-			//logToFile(logfile, intToString(DragonHealth));
-			//logToFile(logfile, intToString(DistanceToDragon));
-			//logToFile(logfile, intToString(*SmiteDamage));
+		//	//logToFile(logfile, "stats:");
+		//	//logToFile(logfile, intToString(DragonHealth));
+		//	//logToFile(logfile, intToString(DistanceToDragon));
+		//	//logToFile(logfile, intToString(*SmiteDamage));
 
-			//if (GetAsyncKeyState(VK_PRIOR)) {
-			//	logToFile(logfile, intToString(DistanceToDragon < 500));
-			//	logToFile(logfile, intToString((DragonHealth <= Utils::GetSmiteDamage())));
-			//	logToFile(logfile, intToString(DragonHealth > 0));
+		//	//if (GetAsyncKeyState(VK_PRIOR)) {
+		//	//	logToFile(logfile, intToString(DistanceToDragon < 500));
+		//	//	logToFile(logfile, intToString((DragonHealth <= Utils::GetSmiteDamage())));
+		//	//	logToFile(logfile, intToString(DragonHealth > 0));
 
-			//	logToFile(logfile, "---------");
+		//	//	logToFile(logfile, "---------");
 
-			//	logToFile(logfile, intToString(DistanceToDragon));
-			//	logToFile(logfile, intToString((DragonHealth)));
-			//	logToFile(logfile, intToString((GetSmiteDamage())));
-			//	logToFile(logfile, intToString(DragonHealth));
-			//	logToFile(logfile, "---------");
-			//}
+		//	//	logToFile(logfile, intToString(DistanceToDragon));
+		//	//	logToFile(logfile, intToString((DragonHealth)));
+		//	//	logToFile(logfile, intToString((GetSmiteDamage())));
+		//	//	logToFile(logfile, intToString(DragonHealth));
+		//	//	logToFile(logfile, "---------");
+		//	//}
 
-			int key = 0;
-			//std::cout << SmiteSlot << std::endl;
-			if (SmiteSlot == 4) key = 32;
-			else if (SmiteSlot == 5) key = 33;
-			if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
-				Smite(ScreenPos, key);
-			}
-			Sleep(5);
-		}
-		else Sleep(50);
-		//Sleep(50);
+		//	int key = 0;
+		//	//std::cout << SmiteSlot << std::endl;
+		//	if (SmiteSlot == 4) key = 32;
+		//	else if (SmiteSlot == 5) key = 33;
+		//	if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
+		//		Smite(ScreenPos, key);
+		//	}
+		//	Sleep(5);
+		//}
+		//else Sleep(50);
+		Sleep(50);
 
 		//GameRenderer renderer;
 		//Vector2 ScreenCoordinates = renderer::WorldToScreen(pos, RendererAddress, BaseAddress, NULL);

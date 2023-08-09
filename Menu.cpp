@@ -92,45 +92,43 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			return oPresent(pSwapChain, SyncInterval, Flags);
 	}
 
-		//if (autosmite & 1 && Globals::localPlayer->IsAlive()) {
-		//
-		//	CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
-		//	uint64_t DragonIndex = MinionManager->GetDragonIndex();
+		if (Globals::autosmite && Globals::localPlayer->IsAlive()) {
+		
+			CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
+			uint64_t DragonIndex = MinionManager->GetDragonIndex();
 	
-		//	if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
+			if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
 	
-		//		Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
-		//		Vector3 DragonPos = Dragon->GetPos();
-		//		float DragonHealth = Dragon->GetHealth();
-		//		Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
-		//		Vector2 ScreenPos = renderer.WorldToScreen(pos);
+				Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
+				Vector3 DragonPos = Dragon->GetPos();
+				float DragonHealth = Dragon->GetHealth();
+				Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
+				Vector2 ScreenPos = renderer.WorldToScreen(pos);
 	
-		//		double DistanceToDragon = (double)sqrt(pow((DragonPos.x - Globals::localPlayer->GetPos().x), 2) + pow((DragonPos.z - Globals::localPlayer->GetPos().z), 2));
+				double DistanceToDragon = (double)sqrt(pow((DragonPos.x - Globals::localPlayer->GetPos().x), 2) + pow((DragonPos.z - Globals::localPlayer->GetPos().z), 2));
 	
 	
-		//		int key = 0;
-		//		if (Utils::GetSmiteSlot() == 4) key = 33;
-		//		else if (Utils::GetSmiteSlot() == 5) key = 32;
-		//		if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
-		//			Funcs::PrintChat("Bänis");
-		//			BlockInput(true);
-		//			POINT originalPos = {};
-		//			GetCursorPos(&originalPos);
-		//			SetCursorPos(pos.x, pos.y);
-		//			PressKeyScan(key);
-		//			Waitingmouseclick = true;
-		//			oldgametime = Funcs::GetGameTime();
-		//			MouseUp(1);
-		//			SetCursorPos(originalPos.x, originalPos.y);
-		//			BlockInput(false);
-		//		}
-		//		if (Funcs::GetGameTime() - oldgametime > 0.05f && Waitingmouseclick) {
-		//			Waitingmouseclick = false;
-		//				ReleaseKeyScan(key);
-		//		}
-		//	}
-		//	delete MinionManager;
-		//}
+				int key = 0;
+				if (Utils::GetSmiteSlot() == 4) key = 32;
+				else if (Utils::GetSmiteSlot() == 5) key = 33;
+				if (DistanceToDragon < 500 && (DragonHealth <= Utils::GetSmiteDamage()) && DragonHealth > 0 && Utils::IsPointOnScreen(ScreenPos)) {
+					BlockInput(true);
+					POINT originalPos = {};
+					GetCursorPos(&originalPos);
+					SetCursorPos(ScreenPos.x, ScreenPos.y);
+					PressKeyScan(key);
+					if(!Waitingmouseclick) oldgametime = Funcs::GetGameTime();
+					Waitingmouseclick = true;
+					MouseUp(1);
+					SetCursorPos(originalPos.x, originalPos.y);
+					BlockInput(false);
+				}
+				if (Funcs::GetGameTime() - oldgametime > 0.005f && Waitingmouseclick) {
+					Waitingmouseclick = false;
+						ReleaseKeyScan(key);
+				}
+			}
+		}
 	
 	if (!keyPressed && GetAsyncKeyState(VK_NEXT) & 1)
 	{

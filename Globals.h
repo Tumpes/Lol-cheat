@@ -13,7 +13,7 @@ namespace Globals {
 	extern Object** MinionList;
 	extern int* pMinionListLength;
 	extern bool autosmite;
-
+	extern uint64_t HUDInput;
 
 	extern Vector2 GetWindowDimensions();
 
@@ -38,5 +38,7 @@ namespace Funcs {
 
 	//typedef bool(__fastcall* fnCastSpellWrapper)(uint64_t* hudSpellInfo, uint64_t* spellInfo);
 	//extern fnCastSpellWrapper CastSpellWrapper;
+
+	char AttackMoveOnPos(Vector2 coordinates);
 }
 

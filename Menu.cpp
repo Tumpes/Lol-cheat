@@ -231,7 +231,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			}
 	    }
 		if (target != nullptr) {
-			Funcs::PrintChat(target->GetName());
+		Vector3 posxd = target->GetPos();
+		Vector2 pos;
+		pos.x = posxd.x;
+		pos.y = posxd.y;
+		Funcs::AttackMoveOnPos(pos);
 		}
 
 	}

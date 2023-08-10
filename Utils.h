@@ -113,7 +113,7 @@ public:
         Globals::localPlayer = *(Object**)(Globals::BaseAddress + Offsets::LocalPlayer);
         Globals::MinionList = *(Object***)(*(Object**)(Globals::BaseAddress + Offsets::MinionList) + 0x8);
         Globals::pMinionListLength = (int*)(*(uint64_t*)(Globals::BaseAddress + Offsets::MinionList) + 0x10);
-
+        Globals::HUDInput = *(uint64_t*)(*(uint64_t*)(Globals::BaseAddress + Offsets::HudInstance) + 0x24);
 
     }
 

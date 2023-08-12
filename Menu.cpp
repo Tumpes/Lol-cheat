@@ -67,6 +67,7 @@ bool autosmite;
 bool CoolDownToggle;
 bool Orbwalker;
 bool Waitingmouseclick;
+float lastmove;
 POINT originalPos = {};
 std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
 
@@ -172,7 +173,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
 			Vector3 DragonPos = Dragon->GetPos();
 			float DragonHealth = Dragon->GetHealth();
-			Vector3 pos = { DragonPos.x, 30.0f, DragonPos.z };
+			Vector3 pos = { DragonPos.x, DragonPos.y, DragonPos.z };
 			Vector2 ScreenPos = renderer.WorldToScreen(pos);
 
 			double DistanceToDragon = (double)sqrt(pow((DragonPos.x - Globals::localPlayer->GetPos().x), 2) + pow((DragonPos.z - Globals::localPlayer->GetPos().z), 2));
@@ -265,12 +266,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				target = attackable[i];
 			}
 	    }
-		if (target != nullptr) {
-		Vector3 posxd = target->GetPos();
-		Vector2 pos;
-		pos.x = posxd.x;
-		pos.y = posxd.y;
-		Funcs::AttackMoveOnPos(pos);
+		if (target != nullptr && Funcs::GetGameTime() - lastmove > 5.0f) {
+		Vector3 pos = target->GetPos();
+		Vector2 screenpos = renderer.WorldToScreen(pos);
+		Funcs::AttackMoveOnPos(screenpos);
+		lastmove = Funcs::GetGameTime();
 		}
 
 	}

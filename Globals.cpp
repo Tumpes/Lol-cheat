@@ -67,18 +67,26 @@ namespace Funcs {
 		return *(float*)(Globals::BaseAddress + Offsets::GameTime);
 	}
 
-	char AttackMoveOnPos(Vector2 coordinates)
+	char AttackMoveOnPos(Vector2 pos)
 	{
 		typedef char(__fastcall* fnAttackMove)(uint64_t HUDInput, unsigned int* params);
 		fnAttackMove ingame_AttackMove = (fnAttackMove)(Globals::BaseAddress + 0x88B0F0);
 
-		unsigned int params[20];
-
-		params[17] = coordinates.x;
-		params[18] = coordinates.y;
+		unsigned int* params = new unsigned int[20];
+		params[17] = (int)pos.x;
+		params[18] = (int)pos.y;
 		params[19] = 0;
 
-		ingame_AttackMove(Globals::HUDInput, (unsigned int*)&params); // hundinput offsetteihin ja testi
+		uint64_t HUDInput = *(uint64_t*)(*(uint64_t*)(Globals::BaseAddress + Offsets::HudInstance) + 0x48);
+
+		ingame_AttackMove(HUDInput, params); // hudinput offsetteihin ja testi
+
+		unsigned int* params2 = new unsigned int[20];
+		params2[17] = (int)pos.x;
+		params2[18] = (int)pos.y;
+		params2[19] = 1;
+
+		ingame_AttackMove(HUDInput, params2);
 
 		return 1;
 	}

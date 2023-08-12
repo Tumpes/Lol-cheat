@@ -18,17 +18,20 @@
 #include "Globals.h"
 
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+typedef HRESULT(__stdcall* ResizeBuffers) (IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 typedef uintptr_t PTR;
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 extern Present oPresent;
+extern ResizeBuffers oResizeBuffers;
 extern HWND window;
 extern WNDPROC oWndProc;
 extern ID3D11Device* pDevice;
 extern ID3D11DeviceContext* pContext;
 extern ID3D11RenderTargetView* mainRenderTargetView;
+extern IDXGISwapChain* gSwapchain;
 
 extern void InitImGui();
 
@@ -48,6 +51,7 @@ extern std::chrono::steady_clock::time_point lastKeyPressTime;
 
 extern void DrawCircle(ImDrawList* canvas, const Vector3& worldPos, float radius, bool filled, int numPoints, ImColor color, float thickness);
 
+extern HRESULT __stdcall hkResizeBuffers(IDXGISwapChain* pSwapChain, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);
 
 extern HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 

@@ -102,6 +102,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		if (kiero::init(kiero::RenderType::D3D11) == kiero::Status::Success)
 		{
 			kiero::bind(8, (void**)&oPresent, hkPresent);
+			kiero::bind(13, (void**)&oResizeBuffers, hkResizeBuffers);
 			init_hook = true;
 		}
 	} while (!init_hook);

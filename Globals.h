@@ -3,8 +3,10 @@
 #include <cstdint>
 #include "Offsets.h"
 #include "Vector.h"
-#include "Object.h"
 #include <string>
+
+extern class Object;
+class Spell;
 
 namespace Globals {
 
@@ -40,5 +42,7 @@ namespace Funcs {
 	//extern fnCastSpellWrapper CastSpellWrapper;
 
 	char AttackMoveOnPos(Vector2 coordinates);
+
+	char MoveOnPos(Vector2 pos);
 }
 

@@ -61,13 +61,15 @@ bool init = false;
 bool menuOpen = false;
 bool keyPressed = false;
 bool Circle = false;
-float size = 400.0f;
 float oldgametime;
 bool autosmite;
 bool CoolDownToggle;
 bool Orbwalker;
 bool Waitingmouseclick;
-float lastmove;
+bool Waitingmouseorbwalker;
+float lastAttack = 0.0f;
+float lastMove = 0.0f;
+
 POINT originalPos = {};
 std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
 
@@ -242,7 +244,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 	}
 
-	if (Orbwalker) {
+	if (Orbwalker && Globals::localPlayer->CanAttack()) {
 		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
 		std::vector<Object*> attackable;
@@ -265,12 +267,24 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				lowHealth = attackable[i]->GetHealth();
 				target = attackable[i];
 			}
-	    }
-		if (target != nullptr && Funcs::GetGameTime() - lastmove > 5.0f) {
-		Vector3 pos = target->GetPos();
-		Vector2 screenpos = renderer.WorldToScreen(pos);
-		Funcs::AttackMoveOnPos(screenpos);
-		lastmove = Funcs::GetGameTime();
+		}
+		if (target != nullptr && lastAttack + Globals::localPlayer->GetAttackDelay() + .004f < Funcs::GetGameTime()) {
+			Vector3 pos = target->GetPos();
+			Vector2 screenpos = renderer.WorldToScreen(pos);
+			Funcs::AttackMoveOnPos(screenpos);
+			lastAttack = Funcs::GetGameTime() + Globals::localPlayer->GetAttackWindUp();
+		}
+		else if (target != nullptr && Funcs::GetGameTime() > lastAttack + Globals::localPlayer->GetAttackWindUp() && lastMove < Funcs::GetGameTime()) {
+			//if (Funcs::GetGameTime() <= lastAttack + Globals::localPlayer->GetAttackDelay() && Funcs::GetGameTime() < lastMove) {
+
+			POINT pos;
+			Vector2 vectorpos;
+			GetCursorPos(&pos);
+			vectorpos.x = pos.x;
+			vectorpos.y = pos.y;
+			Funcs::MoveOnPos(vectorpos);
+
+			lastMove = Funcs::GetGameTime() + 0.005f;
 		}
 
 	}

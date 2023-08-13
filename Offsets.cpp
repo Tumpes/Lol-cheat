@@ -31,6 +31,12 @@ uint64_t Offsets::fnGetBoundingRadius = (uint64_t)0x1f99b0;
 uint64_t Offsets::ObjVisible = (uint64_t)0x310;
 uint64_t Offsets::ObjTeam = (uint64_t)0x3C;
 uint64_t Offsets::ObjTargetable = (uint64_t)0xEB0;
+uint64_t Offsets::oActionState = (uint64_t)0x13C0;
+//oGetBoundingRadius 0x1F99B0
+uint64_t Offsets::oGetAttackDelay = (uint64_t)0x3B4200;
+uint64_t Offsets::oGetAttackWindup = (uint64_t)0x3B4100;
+//oObjAttackRange 0x16B4
+
 
 //Spells
 uint64_t Offsets::SpellInfo = (uint64_t)0x130; //64 a

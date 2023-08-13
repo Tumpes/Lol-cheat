@@ -28,6 +28,9 @@ public:
 	static uint64_t ObjTeam;
 	static uint64_t ObjTargetable;
 	static uint64_t MaxHealth;
+	static uint64_t oGetAttackWindup;
+	static uint64_t oGetAttackDelay;
+	static uint64_t oActionState;
 
 	static uint64_t SpellInfo; 
 	static uint64_t ObjSpellBook;

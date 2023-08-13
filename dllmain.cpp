@@ -220,6 +220,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 	//logToFile(logfile, intToString((uint64_t)MinionListLength));
 
+	Funcs::PrintChat(Globals::localPlayer->GetAttackWindUp());
 
 	//         char* pMinionName = (char*)GetPointerAddress(BaseAddress + Offsets::MinionList, { 0x8, (0x8 * (unsigned long)i), Offsets::Name});
 

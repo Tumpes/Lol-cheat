@@ -4,6 +4,8 @@
 #include "Offsets.h"
 #include "Vector.h"
 #include <string>
+#include "Globals.h"
+#include "Struct.h"
 
 class Spell;
 
@@ -150,6 +152,37 @@ public:
 	bool IsValidTarget()
 	{
 		return this->IsVisible() && this->IsAlive() && this->IsEnemy() && this->IsTargetable();
+	}
+
+	float GetAttackDelay() {
+		typedef float(__fastcall* fnGetAttackDelay)(Object*);
+		fnGetAttackDelay ingame_GetAttackDelay = (fnGetAttackDelay)(Globals::BaseAddress + Offsets::oGetAttackDelay);
+
+		return ingame_GetAttackDelay(this);
+	}
+
+	float GetAttackWindUp() {
+		typedef float(__fastcall* fnGetWindUp)(Object*, int flags);
+		fnGetWindUp ingame_GetAttackDelay = (fnGetWindUp)(Globals::BaseAddress + Offsets::oGetAttackWindup);
+
+		return ingame_GetAttackDelay(this,0x40);
+	}
+
+	//uint64_t GetAttackDelay() {
+	//	typedef char(__fastcall* fnGetAttackDelay)(Object*);
+	//	fnGetAttackDelay ingame_GetAttackDelay = (fnGetAttackDelay)(Globals::BaseAddress + Offsets::oGetAttackDelay);
+
+	//	return ingame_GetAttackDelay(this);
+	//}
+
+	unsigned short GetActionState()
+	{
+		return *(unsigned short*)((uint64_t)this + Offsets::oActionState);
+	}
+
+	bool CanAttack()
+	{
+		return this->GetActionState() & CharacterState::CanAttack;
 	}
 };
 

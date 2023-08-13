@@ -45,7 +45,10 @@ extern bool CoolDownToggle;
 extern float size;
 extern float oldgametime;
 extern bool Waitingmouseclick;
-extern float lastmove;
+extern float lastAttack;
+extern float lastMove;
+extern bool Waitingmouseorbwalker;
+
 extern POINT originalPos;
 
 extern std::chrono::steady_clock::time_point lastKeyPressTime;

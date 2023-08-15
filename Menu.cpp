@@ -69,6 +69,7 @@ bool Waitingmouseclick;
 bool Waitingmouseorbwalker;
 float lastAttack = 0.0f;
 float lastMove = 0.0f;
+Object* me = Globals::localPlayer;
 
 POINT originalPos = {};
 std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
@@ -260,7 +261,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 
 		Object* target = nullptr;
-		float lowHealth = 1000000000000; // hp should never he this high so its fine
+		float lowHealth = 1000000000000.0f; // hp should never he this high so its fine
 
 		for (int i = 0; i < attackable.size(); i++) {
 			if (attackable[i]->GetHealth() < lowHealth) {
@@ -268,13 +269,13 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				target = attackable[i];
 			}
 		}
-		if (target != nullptr && lastAttack + Globals::localPlayer->GetAttackDelay() + .004f < Funcs::GetGameTime()) {
+		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay() + .004f) {
 			Vector3 pos = target->GetPos();
 			Vector2 screenpos = renderer.WorldToScreen(pos);
 			Funcs::AttackMoveOnPos(screenpos);
 			lastAttack = Funcs::GetGameTime() + Globals::localPlayer->GetAttackWindUp();
 		}
-		else if (target != nullptr && Funcs::GetGameTime() > lastAttack + Globals::localPlayer->GetAttackWindUp() && lastMove < Funcs::GetGameTime()) {
+		else if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() - 0.075f && Funcs::GetGameTime() - lastMove > 0.1f) {
 			//if (Funcs::GetGameTime() <= lastAttack + Globals::localPlayer->GetAttackDelay() && Funcs::GetGameTime() < lastMove) {
 
 			POINT pos;

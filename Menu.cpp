@@ -214,7 +214,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 		for (int i = 0; i < HeroManager->GetListSize(); i++) {
 			Object* Hero = HeroManager->getMinionByIndex(i);
-			if (!Hero->IsEnemy() && Hero == Globals::localPlayer) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
+			if (Hero == Globals::localPlayer) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
 			else if(Hero->IsEnemy()) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(0, 0, 255, 255), 1);
 		}
 	}
@@ -245,7 +245,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 	}
 
-	if (Orbwalker && Globals::localPlayer->CanAttack()) {
+	if (Orbwalker && Globals::localPlayer->CanAttack() && GetAsyncKeyState(VK_XBUTTON1)) {
 		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
 		std::vector<Object*> attackable;
@@ -255,7 +255,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			if (Hero == Globals::localPlayer) continue;
 
 			float distance = Hero->DistanceToObject(Globals::localPlayer);
-			if (distance < Globals::localPlayer->GetRealAttackRange() && Hero->IsValidTarget()) {
+			if (distance < Globals::localPlayer->GetRealAttackRange() && Hero->IsValidTarget()) { // IsValidTarget includes IsEnemy
 				attackable.push_back(Hero);
 			}
 		}
@@ -269,13 +269,13 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				target = attackable[i];
 			}
 		}
-		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay() + .004f) {
+		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay()) {
 			Vector3 pos = target->GetPos();
 			Vector2 screenpos = renderer.WorldToScreen(pos);
 			Funcs::AttackMoveOnPos(screenpos);
 			lastAttack = Funcs::GetGameTime() + Globals::localPlayer->GetAttackWindUp();
 		}
-		else if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() - 0.075f && Funcs::GetGameTime() - lastMove > 0.1f) {
+		else if ( Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() - 0.075f && Funcs::GetGameTime() - lastMove > 0.1f) {
 			//if (Funcs::GetGameTime() <= lastAttack + Globals::localPlayer->GetAttackDelay() && Funcs::GetGameTime() < lastMove) {
 
 			POINT pos;

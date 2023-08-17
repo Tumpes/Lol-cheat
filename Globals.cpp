@@ -70,7 +70,7 @@ namespace Funcs {
 	char AttackMoveOnPos(Vector2 pos)
 	{
 		typedef char(__fastcall* fnAttackMove)(uint64_t HUDInput, unsigned int* params);
-		fnAttackMove ingame_AttackMove = (fnAttackMove)(Globals::BaseAddress + 0x88B0F0);
+		fnAttackMove ingame_AttackMove = (fnAttackMove)(Globals::BaseAddress + Offsets::fAttackMove);
 
 		unsigned int* params = new unsigned int[20];
 		params[17] = (int)pos.x;
@@ -94,7 +94,7 @@ namespace Funcs {
 	char MoveOnPos(Vector2 pos)
 	{
 		typedef char(__fastcall* fnAttackMove)(uint64_t HUDInput, unsigned int* params);
-		fnAttackMove ingame_AttackMove = (fnAttackMove)(Globals::BaseAddress + 0x88B2A0);
+		fnAttackMove ingame_AttackMove = (fnAttackMove)(Globals::BaseAddress + Offsets::fMove);
 
 		unsigned int* params = new unsigned int[20];
 		params[17] = (int)pos.x;

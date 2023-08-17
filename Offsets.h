@@ -14,8 +14,10 @@ public:
 	static uint64_t RendererHeight;
 	static uint64_t fPrintChat;
 	static uint64_t fSendChat;
+	static uint64_t fAttackMove;
 	static uint64_t fCastSpellWrapper;
 	static uint64_t oChatClient;
+	static uint64_t fMove;
 
 
 	static uint64_t Position;

@@ -47,6 +47,7 @@ extern float oldgametime;
 extern bool Waitingmouseclick;
 extern float lastAttack;
 extern float lastMove;
+extern int orbwalkKey;
 extern bool Waitingmouseorbwalker;
 
 extern POINT originalPos;

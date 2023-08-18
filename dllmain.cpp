@@ -18,7 +18,7 @@
 #include <regex>
 #include "Globals.h"
 #include "Object.h"
-
+#include <conio.h>
 
 #include "Kiero/kiero.h"
 #include <dxgi.h>
@@ -29,6 +29,7 @@
 #include "Kiero/minhook/include/MinHook.h"
 
 #include "Menu.h"
+
 
 
 
@@ -222,18 +223,32 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 	Funcs::PrintChat(Globals::localPlayer->GetAttackWindUp());
 
+
 	//         char* pMinionName = (char*)GetPointerAddress(BaseAddress + Offsets::MinionList, { 0x8, (0x8 * (unsigned long)i), Offsets::Name});
 
 	logfile << "stats: " << *Globals::pMinionListLength << "  " << me << "  " << MinionManager;
-	logfile.close();
 	while (!GetAsyncKeyState(VK_END)) {
 
 		if (GetAsyncKeyState(VK_DELETE)) {
-			for (int i = 0; i < 11; i++) {
-				Funcs::SendChat("?");
+		//	for (int i = 0; i < 11; i++) {
+		//		Funcs::SendChat("?");
+		//	}
+		//	Sleep(2000);
+			int pressedkey = NULL;
+			for (int key = 0x41; key <= 0x59; ++key) { // a-z
+				if (GetAsyncKeyState(key)) {
+					pressedkey = key;
+				}
 			}
+			for (int key = 1; key <= 0xb7; ++key) { //hiiri
+				if (GetAsyncKeyState(key)) {
+					pressedkey = key;
+				}
+			
+			}
+			if (pressedkey != NULL) Funcs::PrintChat(pressedkey);
 			Sleep(2000);
-		}
+		} 
 
 		if (!Globals::localPlayer->IsAlive()) { Sleep(50); continue; }
 

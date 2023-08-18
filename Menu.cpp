@@ -69,6 +69,7 @@ bool Waitingmouseclick;
 bool Waitingmouseorbwalker;
 float lastAttack = 0.0f;
 float lastMove = 0.0f;
+int orbwalkKey;
 Object* me = Globals::localPlayer;
 
 POINT originalPos = {};
@@ -269,13 +270,13 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				target = attackable[i];
 			}
 		}
-		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay()) {
+		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay() - 0.010f) {
 			Vector3 pos = target->GetPos();
 			Vector2 screenpos = renderer.WorldToScreen(pos);
 			Funcs::AttackMoveOnPos(screenpos);
 			lastAttack = Funcs::GetGameTime() + Globals::localPlayer->GetAttackWindUp();
 		}
-		else if ( Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() - 0.075f && Funcs::GetGameTime() - lastMove > 0.1f) {
+		else if ( Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() - 0.065f && Funcs::GetGameTime() - lastMove > 0.1f) {
 			//if (Funcs::GetGameTime() <= lastAttack + Globals::localPlayer->GetAttackDelay() && Funcs::GetGameTime() < lastMove) {
 
 			POINT pos;

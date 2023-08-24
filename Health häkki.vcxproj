@@ -215,7 +215,6 @@
     <ClCompile Include="Kiero\minhook\src\hook.c" />
     <ClCompile Include="Kiero\minhook\src\trampoline.c" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SigScan.cpp" />
     <ClCompile Include="stdafx.cpp">

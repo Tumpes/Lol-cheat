@@ -8,6 +8,7 @@ public:
 	static const uint64_t MinionList = (uint64_t)0x219FE58; //64 
 	static const uint64_t HeroList = (uint64_t)0x219D000; //64 a
 	static const uint64_t LocalPlayer = (uint64_t)0x21B7BC0; //64 a
+	static const uint64_t BuffManager = (uint64_t)0x27B0;        //[[[[<league of Legends.exe> +0x21B7BC0]+ 0x27C8] + 0x00] + 0x10] + 0x8
 	static const uint64_t Renderer = (uint64_t)0x22078F0; //64 
 	static const uint64_t ViewProjMatrices = (uint64_t)0x21FEE30; //64
 	static const uint64_t RendererWidth = (uint64_t)0xC; //64
@@ -49,4 +50,6 @@ public:
 	static const uint64_t SpellInstance = (uint64_t)0x6D0; //64   spellslot => instance tai spellbookspellslot
 	static const uint64_t SpellSlotTime = (uint64_t)0x30; // spell + 30
 
+	static const uint64_t BuffManagerStart = (uint64_t)0x18;
+	static const uint64_t BuffManagerEnd = (uint64_t)0x18;
 };

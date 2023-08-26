@@ -5,6 +5,7 @@ namespace Globals {
 	uint64_t BaseAddress;
 	Object* localPlayer;
 	Object** MinionList;
+	void** Bufflist;
 	int* pMinionListLength;
 	bool autosmite;
 	uint64_t HUDInput;

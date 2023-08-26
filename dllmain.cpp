@@ -230,25 +230,41 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	while (!GetAsyncKeyState(VK_END)) {
 
 		if (GetAsyncKeyState(VK_DELETE)) {
+		Funcs::SendChat("#........#..#..........#....#####....");
+		Funcs::SendChat("#......#......#......#....#..............#..");
+		Funcs::SendChat("#....#.........#..#......#..................");
+		Funcs::SendChat("###.............#...........#####....");
+		Funcs::SendChat("#....#............#.......................#..");
+		Funcs::SendChat("#......#..........#........#............#..");
+		Funcs::SendChat("#........#........#..........#####....");
+		Sleep(2000);
+		}
+
+		if (GetAsyncKeyState(VK_PRIOR)) {
+
+			Sleep(2000);
+		}
+
+
 		//	for (int i = 0; i < 11; i++) {
 		//		Funcs::SendChat("?");
 		//	}
 		//	Sleep(2000);
-			int pressedkey = NULL;
-			for (int key = 0x41; key <= 0x59; ++key) { // a-z
-				if (GetAsyncKeyState(key)) {
-					pressedkey = key;
-				}
-			}
-			for (int key = 1; key <= 0xb7; ++key) { //hiiri
-				if (GetAsyncKeyState(key)) {
-					pressedkey = key;
-				}
-			
-			}
-			if (pressedkey != NULL) Funcs::PrintChat(pressedkey);
-			Sleep(2000);
-		} 
+		//	int pressedkey = NULL;
+		//	for (int key = 0x41; key <= 0x59; ++key) { // a-z
+		//		if (GetAsyncKeyState(key)) {
+		//			pressedkey = key;
+		//		}
+		//	}
+		//	for (int key = 1; key <= 0xb7; ++key) { //hiiri
+		//		if (GetAsyncKeyState(key)) {
+		//			pressedkey = key;
+		//		}
+		//	
+		//	}
+		//	if (pressedkey != NULL) Funcs::PrintChat(pressedkey);
+		//	Sleep(2000);
+		//} 
 
 		if (!Globals::localPlayer->IsAlive()) { Sleep(50); continue; }
 

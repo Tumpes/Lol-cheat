@@ -16,6 +16,7 @@ namespace Globals {
 	extern int* pMinionListLength;
 	extern bool autosmite;
 	extern uint64_t HUDInput;
+	extern void** Bufflist;
 
 	extern Vector2 GetWindowDimensions();
 

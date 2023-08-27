@@ -169,12 +169,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 	if (autosmite && Globals::localPlayer->IsAlive()) {
 
-		CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
-		uint64_t DragonIndex = MinionManager->GetDragonIndex();
+		uint64_t DragonIndex = Globals::MinionList->GetDragonIndex();
 
 		if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
 
-			Object* Dragon = MinionManager->getMinionByIndex((int)DragonIndex);
+			Object* Dragon = Globals::MinionList->getMinionByIndex((int)DragonIndex);
 			Vector3 DragonPos = Dragon->GetPos();
 			float DragonHealth = Dragon->GetHealth();
 			Vector3 pos = { DragonPos.x, DragonPos.y, DragonPos.z };
@@ -211,20 +210,17 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 
 	if (Circle) {
-		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
-
-		for (int i = 0; i < HeroManager->GetListSize(); i++) {
-			Object* Hero = HeroManager->getMinionByIndex(i);
+		for (int i = 0; i < Globals::HeroList->GetListSize(); i++) {
+			Object* Hero = Globals::HeroList->getMinionByIndex(i);
 			if (Hero == Globals::localPlayer) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
 			else if(Hero->IsEnemy()) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(0, 0, 255, 255), 1);
 		}
 	}
 
 	if (CoolDownToggle) {
-		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
-		for (int i = 0; i < HeroManager->GetListSize(); i++) {
-			Object* Hero = HeroManager->getMinionByIndex(i);
+		for (int i = 0; i < Globals::HeroList->GetListSize(); i++) {
+			Object* Hero = Globals::HeroList->getMinionByIndex(i);
 			for (int j = 0; j <= 5; j++) {
 				const char* text = "";
 				Vector2 Screenpos = renderer.WorldToScreen(Hero->GetPos());
@@ -247,12 +243,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	}
 
 	if (Orbwalker && Globals::localPlayer->CanAttack() && GetAsyncKeyState(VK_XBUTTON1)) {
-		CMinionManager* HeroManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
 
 		std::vector<Object*> attackable;
 
-		for (int i = 0; i < HeroManager->GetListSize(); i++) {
-			Object* Hero = HeroManager->getMinionByIndex(i);
+		for (int i = 0; i < Globals::HeroList->GetListSize(); i++) {
+			Object* Hero = Globals::HeroList->getMinionByIndex(i);
 			if (Hero == Globals::localPlayer) continue;
 
 			float distance = Hero->DistanceToObject(Globals::localPlayer);

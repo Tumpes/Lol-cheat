@@ -6,13 +6,15 @@
 #include <string>
 
 extern class Object;
+extern class CMinionManager;
 class Spell;
 
 namespace Globals {
 
 	extern uint64_t BaseAddress;
 	extern Object* localPlayer;
-	extern Object** MinionList;
+	extern CMinionManager* MinionList;
+	extern CMinionManager* HeroList;
 	extern int* pMinionListLength;
 	extern bool autosmite;
 	extern uint64_t HUDInput;

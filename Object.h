@@ -117,8 +117,7 @@ public:
 
 	bool IsEnemy()
 	{
-		Object* localplayer = *(Object**)((uint64_t)GetModuleHandleA("League of Legends.exe") + Offsets::LocalPlayer);
-		return this->GetTeam() != localplayer->GetTeam();
+		return this->GetTeam() != Globals::localPlayer->GetTeam();
 	}
 
 	bool IsTargetable()

@@ -241,7 +241,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		}
 
 		if (GetAsyncKeyState(VK_PRIOR)) {
-
+			Funcs::PrintChat(Globals::localPlayer->GetPos().y);
 			Sleep(2000);
 		}
 

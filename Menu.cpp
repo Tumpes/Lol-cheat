@@ -168,6 +168,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	}
 
 	if (autosmite && Globals::localPlayer->IsAlive()) {
+		//if (autosmite) {
 
 		uint64_t DragonIndex = Globals::MinionList->GetDragonIndex();
 
@@ -220,13 +221,16 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 		for (int i = 0; i < Turretlist->GetListSize(); i++) {
 			Object* Turret = Turretlist->getMinionByIndex(i);
+			if (Turret->IsEnemy()) continue;
 			Vector3 newpos;
 			newpos = Turret->GetPos();
-			float yoffset = Turret->GetMaxHealth() < 9000.f ? 15 : 15;
-			newpos.y = newpos.y + yoffset;
+			newpos.y = newpos.y + 15.0f;
+			if (Turret->GetMaxHealth() > 9000.f) {
+				newpos.y = 180.f;
+			}
 
-			int towerRange = Turret->GetMaxHealth() < 9000.f ? 870 : 1500;
-			DrawCircle(draw, newpos, towerRange, 0, 100, IM_COL32(0, 255, 0, 128), 1);
+			int towerRange = Turret->GetMaxHealth() < 9000.f ? 870 : 1380;
+			DrawCircle(draw, newpos, towerRange, 0, 100, IM_COL32(255, 0, 255, 128), 1);
 		}
 	}
 

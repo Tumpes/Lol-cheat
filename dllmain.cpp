@@ -244,18 +244,11 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		Sleep(2000);
 		}
 
-		if (GetAsyncKeyState(VK_PRIOR)) {
-			Funcs::PrintChat(Globals::localPlayer->GetPos().y);
-			Sleep(2000);
-		}
+		//if (GetAsyncKeyState(VK_PRIOR)) {
 
-
-		//	for (int i = 0; i < 11; i++) {
-		//		Funcs::SendChat("?");
-		//	}
-		//	Sleep(2000);
 		//	int pressedkey = NULL;
 		//	for (int key = 0x41; key <= 0x59; ++key) { // a-z
+
 		//		if (GetAsyncKeyState(key)) {
 		//			pressedkey = key;
 		//		}
@@ -264,11 +257,12 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//		if (GetAsyncKeyState(key)) {
 		//			pressedkey = key;
 		//		}
-		//	
+
 		//	}
 		//	if (pressedkey != NULL) Funcs::PrintChat(pressedkey);
+
 		//	Sleep(2000);
-		//} 
+		//}
 
 		if (!Globals::localPlayer->IsAlive()) { Sleep(50); continue; }
 

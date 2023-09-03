@@ -57,6 +57,18 @@ void DrawCircle(ImDrawList* canvas, const Vector3& worldPos, float radius, bool 
 		canvas->AddPolyline(points, numPoints, color, true, thickness);
 }
 
+ImGuiKey GetPressedKey() {
+	ImGuiKey pressedkey = ImGuiKey_None;
+	for (int i = 1; i <= 0x28A; ++i) { //hiiri
+		ImGuiKey key = ImGuiKey(i);
+		if (ImGui::IsKeyDown(key)) {
+			pressedkey = key;
+		}
+	}
+
+	return pressedkey;
+}
+
 bool init = false;
 bool menuOpen = false;
 bool keyPressed = false;
@@ -65,11 +77,11 @@ float oldgametime;
 bool autosmite;
 bool CoolDownToggle;
 bool Orbwalker;
+ImGuiKey OrbWalkerKey;
 bool Waitingmouseclick;
 bool Waitingmouseorbwalker;
 float lastAttack = 0.0f;
 float lastMove = 0.0f;
-int orbwalkKey;
 Object* me = Globals::localPlayer;
 
 POINT originalPos = {};
@@ -130,16 +142,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			return oPresent(pSwapChain, SyncInterval, Flags);
 	}
 	
-	if (!keyPressed && GetAsyncKeyState(VK_NEXT) & 1)
-	{
-		keyPressed = true;
-		lastKeyPressTime = std::chrono::steady_clock::now();
-	}
 	auto currentTime = std::chrono::steady_clock::now();
-	if (keyPressed && std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastKeyPressTime).count() > 200) // Adjust the delay as needed
+	if (GetAsyncKeyState(VK_NEXT) && std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastKeyPressTime).count() > 400) // Adjust the delay as needed
 	{
 		menuOpen = !menuOpen;
-		keyPressed = false;
+		lastKeyPressTime = std::chrono::steady_clock::now();
 	}
 
 	ImGui_ImplDX11_NewFrame();
@@ -153,7 +160,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		//auto draw = ImGui::GetBackgroundDrawList();
 		//draw->AddCircle(ImVec2(1920 / 2, 1080 / 2), size, IM_COL32(255, 0, 0, 255), 100, 1.f);
 
-		ImGui::Begin("ImGui Window");
+		ImGui::Begin(u8"Häkeillä");
 		ImGui::SetNextWindowSize(ImVec2(150.0f, 140.0f), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowPos(ImVec2(25, 25));
 
@@ -161,6 +168,14 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::Checkbox("Autosmite", &autosmite);
 		ImGui::Checkbox("Show Cooldowns (not enemy)", &CoolDownToggle);
 		ImGui::Checkbox("Orbwalker", &Orbwalker);
+		ImGui::SameLine();
+		ImGui::Text(" Key");
+		ImGui::SameLine();
+		if (ImGui::Button(ImGui::GetKeyName(OrbWalkerKey)) & 1) {
+			OrbWalkerKey = GetPressedKey();
+		}
+
+
 
 		ImGui::End();
 
@@ -259,7 +274,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 	}
 
-	if (Orbwalker && Globals::localPlayer->CanAttack() && GetAsyncKeyState(VK_XBUTTON1)) {
+	if (Orbwalker && Globals::localPlayer->CanAttack() && ImGui::IsKeyDown(OrbWalkerKey)) {
 
 		std::vector<Object*> attackable;
 

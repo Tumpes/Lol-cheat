@@ -1,4 +1,5 @@
 #include "menu.h"
+#include <io.h>
 
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef HRESULT(__stdcall* ResizeBuffers) (IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);
@@ -99,10 +100,9 @@ HRESULT __stdcall hkResizeBuffers(IDXGISwapChain* pSwapChain, UINT BufferCount, 
 
 	ID3D11Texture2D* pBuffer;
 	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBuffer);
-	// Perform error handling here!
 
 	pDevice->CreateRenderTargetView(pBuffer, NULL, &mainRenderTargetView);
-	// Perform error handling here!
+
 	pBuffer->Release();
 
 	pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);
@@ -317,6 +317,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 
 	}
+
 
 	ImGui::End();
 

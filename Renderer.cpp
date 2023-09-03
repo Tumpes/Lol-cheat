@@ -30,11 +30,11 @@ void GameRenderer::MultiplyMatrices(float* out, float* a, int row1, int col1, fl
 void GameRenderer::LoadFromMem() {
 
 	char buff[128];
-	memcpy(buff, *reinterpret_cast<void**>(Globals::BaseAddress + Offsets::Renderer), 128);
-	memcpy(&width, &buff[Offsets::RendererWidth], sizeof(int));
-	memcpy(&height, &buff[Offsets::RendererHeight], sizeof(int));
+	memcpy(buff, *reinterpret_cast<void**>(Globals::BaseAddress + oRenderer), 128);
+	memcpy(&width, &buff[oRendererWidth], sizeof(int));
+	memcpy(&height, &buff[oRendererHeight], sizeof(int));
 
-	const uint64_t ViewProjMatricesptr = (uint64_t)(Globals::BaseAddress + Offsets::ViewProjMatrices);
+	const uint64_t ViewProjMatricesptr = (uint64_t)(Globals::BaseAddress + oViewProjMatrices);
 
 	//std::cout << std::hex << moduleBase << std::endl;
 	//std::cout << std::hex << OffsetViewProjMatrices << std::endl;

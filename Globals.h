@@ -25,7 +25,7 @@ namespace Globals {
 	//static void PrintChat_s(const char* message) {
 	//	std::string str(message);
 	//	message = std::regex_replace(message, std::regex("ä"), "");
-	//	PrintChat(BaseAddress + Offsets::oChatClient, message, 0x2);
+	//	PrintChat(BaseAddress + oChatClient, message, 0x2);
 	//}
 
 };

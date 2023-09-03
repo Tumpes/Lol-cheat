@@ -58,12 +58,12 @@ HMODULE myhModule;
 //public:
 //    void printChat(const char* message) noexcept
 //    {
-//		static const auto PrintChat{ reinterpret_cast<void(__fastcall*)(void*, const char*, int)>(std::uintptr_t(::GetModuleHandle(nullptr)) + Offsets::fPrintChat) };
+//		static const auto PrintChat{ reinterpret_cast<void(__fastcall*)(void*, const char*, int)>(std::uintptr_t(::GetModuleHandle(nullptr)) + fPrintChat) };
 //        PrintChat(this, message, 4);
 //    }
 //};
 //
-//[[nodiscard]] __forceinline auto getChat() noexcept { return *reinterpret_cast<Chat**>(GetModuleHandle(NULL) + Offsets::oChatClient); }
+//[[nodiscard]] __forceinline auto getChat() noexcept { return *reinterpret_cast<Chat**>(GetModuleHandle(NULL) + oChatClient); }
 
 
 uint64_t __stdcall EjectThread(LPVOID lpParameter) {
@@ -90,7 +90,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	Sleep(100);
 
 	while (true) {
-		float* GameTimePtr = (float*)(Globals::BaseAddress + Offsets::GameTime);
+		float* GameTimePtr = (float*)(Globals::BaseAddress + oGameTime);
 		if (GameTimePtr != nullptr || *GameTimePtr > 3.0f) break;
 		Sleep(300);
 	}
@@ -108,9 +108,13 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		}
 	} while (!init_hook);
 
+	//while (true) {
+	//	Sleep(1000);
+	//}
+
 	//Utils::logToFile(logfile, "1.1");
 	//Utils::logToFile(logfile, "1.2");
-	CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
+	CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + oMinionList);
 	//Utils::logToFile(logfile, "1.3");
 
 	//logToFile(logfile, "asdaasdasdasd");
@@ -145,14 +149,14 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	//typedef void(__fastcall* fnPrintChat)(DWORD, const char*, int);
 
 	//// Function object											Pointing game function to the object
-	//fnPrintChat PrintChat = (fnPrintChat)((DWORD)GetModuleHandle(NULL) + Offsets::fPrintChat);
+	//fnPrintChat PrintChat = (fnPrintChat)((DWORD)GetModuleHandle(NULL) + fPrintChat);
 
 	//// Executing function
-	//PrintChat(BaseAddress + Offsets::oChatClient, "Miki on homo", 0xFFFFFF);
+	//PrintChat(BaseAddress + oChatClient, "Miki on homo", 0xFFFFFF);
 
 	//std::cout << std::hex << BaseAddress << std::endl;
 
-	//const uint64_t Localplayer = *reinterpret_cast<uint64_t*>(BaseAddress + Offsets::LocalPlayer);     //toimii
+	//const uint64_t Localplayer = *reinterpret_cast<uint64_t*>(BaseAddress + LocalPlayer);     //toimii
 	//Utils::logToFile(logfile, "1.4");
 	int SmiteSlot = Utils::GetSmiteSlot();
 	//Utils::logToFile(logfile, "1.55");
@@ -224,7 +228,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	Funcs::PrintChat(Globals::localPlayer->GetAttackWindUp());
 
 
-	//         char* pMinionName = (char*)GetPointerAddress(BaseAddress + Offsets::MinionList, { 0x8, (0x8 * (unsigned long)i), Offsets::Name});
+	//         char* pMinionName = (char*)GetPointerAddress(BaseAddress + MinionList, { 0x8, (0x8 * (unsigned long)i), Name});
 
 	logfile << "stats: " << *Globals::pMinionListLength << "  " << me << "  " << MinionManager;
 	while (!GetAsyncKeyState(VK_END)) {
@@ -268,8 +272,8 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 		if (!Globals::localPlayer->IsAlive()) { Sleep(50); continue; }
 
-		//uint64_t HudInstance = *(uint64_t*)(Globals::BaseAddress + Offsets::HudInstance);
-		//uint64_t HudInstanceSpellInfo = *(uint64_t*)(HudInstance + Offsets::HudInstanceSpellInfo);
+		//uint64_t HudInstance = *(uint64_t*)(Globals::BaseAddress + HudInstance);
+		//uint64_t HudInstanceSpellInfo = *(uint64_t*)(HudInstance + HudInstanceSpellInfo);
 
 		//if (GetAsyncKeyState(VK_HOME)) {
 		//	CastSpellWrapper((uint64_t*)HudInstanceSpellInfo, (uint64_t*)(HudInstanceSpellInfo + 8));
@@ -298,7 +302,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		//	Utils::logToFile(logfile, Utils::intToString((int)Utils::GetSmiteDamage()));
 		//}
 
-		//float GameTime = *(float*)(Globals::BaseAddress + Offsets::GameTime);
+		//float GameTime = *(float*)(Globals::BaseAddress + GameTime);
 
 		//uint64_t DragonIndex = 0xDEADBEEFF00D;
 

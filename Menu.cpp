@@ -217,11 +217,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			else if(Hero->IsEnemy()) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(0, 0, 255, 255), 1);
 		}
 
-		CMinionManager* Turretlist = *(CMinionManager**)(Globals::BaseAddress + Offsets::TurretList);
+		CMinionManager* Turretlist = *(CMinionManager**)(Globals::BaseAddress + oTurretList);
 
 		for (int i = 0; i < Turretlist->GetListSize(); i++) {
 			Object* Turret = Turretlist->getMinionByIndex(i);
-			if (Turret->IsEnemy()) continue;
+			if (!Turret->IsEnemy()) continue;
 			Vector3 newpos;
 			newpos = Turret->GetPos();
 			newpos.y = newpos.y + 15.0f;

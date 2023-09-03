@@ -39,7 +39,7 @@ public:
 	//}
 
 	Vector3 GetPos() {
-		return *(Vector3*)((uint64_t)this + Offsets::Position);
+		return *(Vector3*)(this + oObjPosition);
 	}
 
 	//int GetLevel() {
@@ -47,11 +47,11 @@ public:
 	//}
 
 	float GetHealth() {
-		return *(float*)((uint64_t)this + Offsets::Health);
+		return *(float*)((uint64_t)this + oObjHealth);
 	}
 
 	float GetMaxHealth() {
-		return *(float*)((uint64_t)this + Offsets::MaxHealth);
+		return *(float*)((uint64_t)this + oObjMaxHealth);
 	}
 
 	//float GetBaseAttackDamage() {
@@ -75,7 +75,7 @@ public:
 	//}
 
 	float GetAttackRange() {
-		return *(float*)((uint64_t)this + Offsets::ObjAtkRange);
+		return *(float*)((uint64_t)this + oObjAtkRange);
 	}
 
 	//bool IsVisible() {
@@ -83,7 +83,7 @@ public:
 	//}
 
 	bool IsAlive() {
-		return !(*(int*)((uint64_t)this + Offsets::IsAlive) % 2);
+		return !(*(int*)((uint64_t)this + oObjIsAlive) % 2);
 	}
 
 	//float GetBoundingRadius() {
@@ -99,11 +99,11 @@ public:
 	//}
 
 	char* GetName() { //scuffed :D
-		return *reinterpret_cast<char**>((uint64_t)this + Offsets::Name);
+		return *reinterpret_cast<char**>((uint64_t)this + oObjName);
 	}
 
 	int* GetNameLengthptr() {
-		return reinterpret_cast<int*>((uint64_t)this + (Offsets::Name + 0x10));
+		return reinterpret_cast<int*>((uint64_t)this + (oObjName + 0x10));
 		// älä käytä: undefined
 	}
 
@@ -112,7 +112,7 @@ public:
 	//}
 
 	int GetTeam() {
-		return *(int*)((uint64_t)this + Offsets::ObjTeam);
+		return *(int*)((uint64_t)this + oObjTeam);
 	}
 
 	bool IsEnemy()
@@ -122,13 +122,13 @@ public:
 
 	bool IsTargetable()
 	{
-		return *(bool*)((uint64_t)this + Offsets::ObjTargetable);
+		return *(bool*)((uint64_t)this + oObjTargetable);
 	}
 
 	float GetBoundingRadius()
 	{
 		typedef float(__fastcall* fnGetBoundingRadius)(Object* obj);
-		fnGetBoundingRadius _fnGetBoundingRadius = (fnGetBoundingRadius)((uint64_t)GetModuleHandleA("League of Legends.exe") + Offsets::fnGetBoundingRadius);
+		fnGetBoundingRadius _fnGetBoundingRadius = (fnGetBoundingRadius)((uint64_t)GetModuleHandleA("League of Legends.exe") + oGetBoundingRadius);
 		return _fnGetBoundingRadius(this);
 	}
 
@@ -137,7 +137,7 @@ public:
 	}
 
 	Spell* getSpellByIndex(int index) {
-		return (Spell*)*reinterpret_cast<uint64_t*>(this + Offsets::ObjSpellBook + Offsets::SpellInstance + (0x8 * index));
+		return (Spell*)*reinterpret_cast<uint64_t*>(this + oObjSpellBook + oSpellInstance + (0x8 * index));
 	} // Järjestys: q w e r passive d f
 
 	float DistanceToObject(Object* obj) {
@@ -145,7 +145,7 @@ public:
 	}
 
 	bool IsVisible() {
-		return *(bool*)((uint64_t)this + Offsets::ObjVisible);
+		return *(bool*)((uint64_t)this + oObjVisible);
 	}
 
 	bool IsValidTarget()
@@ -155,28 +155,28 @@ public:
 
 	float GetAttackDelay() {
 		typedef float(__fastcall* fnGetAttackDelay)(Object*);
-		fnGetAttackDelay ingame_GetAttackDelay = (fnGetAttackDelay)(Globals::BaseAddress + Offsets::oGetAttackDelay);
+		fnGetAttackDelay ingame_GetAttackDelay = (fnGetAttackDelay)(Globals::BaseAddress + oGetAttackDelay);
 
 		return ingame_GetAttackDelay(this);
 	}
 
 	float GetAttackWindUp() {
 		typedef float(__fastcall* fnGetWindUp)(Object*, int flags);
-		fnGetWindUp ingame_GetAttackDelay = (fnGetWindUp)(Globals::BaseAddress + Offsets::oGetAttackWindup);
+		fnGetWindUp ingame_GetAttackDelay = (fnGetWindUp)(Globals::BaseAddress + oGetAttackWindup);
 
 		return ingame_GetAttackDelay(this,0x40);
 	}
 
 	//uint64_t GetAttackDelay() {
 	//	typedef char(__fastcall* fnGetAttackDelay)(Object*);
-	//	fnGetAttackDelay ingame_GetAttackDelay = (fnGetAttackDelay)(Globals::BaseAddress + Offsets::oGetAttackDelay);
+	//	fnGetAttackDelay ingame_GetAttackDelay = (fnGetAttackDelay)(Globals::BaseAddress + oGetAttackDelay);
 
 	//	return ingame_GetAttackDelay(this);
 	//}
 
 	unsigned short GetActionState()
 	{
-		return *(unsigned short*)((uint64_t)this + Offsets::oActionState);
+		return *(unsigned short*)((uint64_t)this + oObjActionState);
 	}
 
 	bool CanAttack()
@@ -206,7 +206,7 @@ public:
 class Spell {  //In c++ you have to declare(not necessarily define) a class before it is mentioned in another class.
 public:
 	SpellInfo* GetSpellInfo() {
-		return *reinterpret_cast<SpellInfo**>(this + Offsets::SpellInfo);
+		return *reinterpret_cast<SpellInfo**>(this + oSpellInfo);
 	}
 
 	float* GetSpellDamagePtr() {
@@ -214,8 +214,8 @@ public:
 	}
 
 	float GetSpellCooldown() {
-		float readytime = *(float*)(this + Offsets::SpellSlotTime);
-		float gametime = *(float*)((uint64_t)GetModuleHandleA("League of Legends.exe") + Offsets::GameTime);
+		float readytime = *(float*)(this + oSpellSlotTime);
+		float gametime = *(float*)((uint64_t)GetModuleHandleA("League of Legends.exe") + oGameTime);
 
 		if (readytime > gametime) {
 			return readytime - gametime;

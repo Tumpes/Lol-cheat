@@ -110,11 +110,11 @@ public:
     static void fninit() {
 
         Globals::BaseAddress = (uint64_t)GetModuleHandleA("League of Legends.exe");
-        Globals::localPlayer = *(Object**)(Globals::BaseAddress + Offsets::LocalPlayer);
-        Globals::MinionList = *(CMinionManager**)(Globals::BaseAddress + Offsets::MinionList);
-        Globals::HeroList = *(CMinionManager**)(Globals::BaseAddress + Offsets::HeroList);
-        Globals::pMinionListLength = (int*)(*(uint64_t*)(Globals::BaseAddress + Offsets::MinionList) + 0x10);
-        Globals::HUDInput = *(uint64_t*)(*(uint64_t*)(Globals::BaseAddress + Offsets::HudInstance) + 0x24);
+        Globals::localPlayer = *(Object**)(Globals::BaseAddress + oLocalPlayer);
+        Globals::MinionList = *(CMinionManager**)(Globals::BaseAddress + oMinionList);
+        Globals::HeroList = *(CMinionManager**)(Globals::BaseAddress + oHeroList);
+        Globals::pMinionListLength = (int*)(*(uint64_t*)(Globals::BaseAddress + oMinionList) + 0x10);
+        Globals::HUDInput = *(uint64_t*)(*(uint64_t*)(Globals::BaseAddress + oHudInstance) + 0x24);
 
     }
 

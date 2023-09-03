@@ -164,7 +164,6 @@
   <ItemGroup>
     <ClInclude Include="CMinion.h" />
     <ClInclude Include="CopyThread.h" />
-    <ClInclude Include="Dumper.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Globals.h" />

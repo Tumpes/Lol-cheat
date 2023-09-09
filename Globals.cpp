@@ -4,8 +4,8 @@ namespace Globals {
 
 	uint64_t BaseAddress;
 	Object* localPlayer;
-	CMinionManager* MinionList;
-	CMinionManager* HeroList;
+	CObjectManager* MinionList;
+	CObjectManager* HeroList;
 	void** Bufflist;
 	int* pMinionListLength;
 	bool autosmite;

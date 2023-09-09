@@ -78,7 +78,6 @@ float oldgametime;
 bool autosmite;
 bool CoolDownToggle;
 bool Orbwalker;
-ImGuiKey OrbWalkerKey;
 bool Waitingmouseclick;
 bool Waitingmouseorbwalker;
 float lastAttack = 0.0f;
@@ -171,14 +170,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::SameLine();
 		ImGui::Text(" Key");
 		ImGui::SameLine();
-		if (ImGui::Button(ImGui::GetKeyName(OrbWalkerKey)) & 1) {
-			OrbWalkerKey = GetPressedKey();
+		if (ImGui::Button(ImGui::GetKeyName(Config::OrbwalkKey)) & 1) {
+			Config::OrbwalkKey = GetPressedKey();
 		}
 
-
-
 		ImGui::End();
-
 
 	}
 
@@ -232,7 +228,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			else if(Hero->IsEnemy()) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(0, 0, 255, 255), 1);
 		}
 
-		CMinionManager* Turretlist = *(CMinionManager**)(Globals::BaseAddress + oTurretList);
+		CObjectManager* Turretlist = *(CObjectManager**)(Globals::BaseAddress + oTurretList);
 
 		for (int i = 0; i < Turretlist->GetListSize(); i++) {
 			Object* Turret = Turretlist->getMinionByIndex(i);
@@ -274,7 +270,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 	}
 
-	if (Orbwalker && Globals::localPlayer->CanAttack() && ImGui::IsKeyDown(OrbWalkerKey)) {
+	if (Orbwalker && Globals::localPlayer->CanAttack() && ImGui::IsKeyDown(Config::OrbwalkKey)) {
 
 		std::vector<Object*> attackable;
 

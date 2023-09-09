@@ -9,7 +9,7 @@
 
 
 
-class CMinionManager {
+class CObjectManager {
 public:
 
 	Object* getMinionByIndex(int index) {

@@ -16,6 +16,7 @@
 #include "Utils.h"
 #include "MinionManager.h"
 #include "Globals.h"
+#include "Config.h"
 
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef HRESULT(__stdcall* ResizeBuffers) (IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);

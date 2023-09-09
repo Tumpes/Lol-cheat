@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CMinion.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="CopyThread.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="framework.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="xorstr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />

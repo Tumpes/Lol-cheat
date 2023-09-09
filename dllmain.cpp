@@ -114,7 +114,7 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 
 	//Utils::logToFile(logfile, "1.1");
 	//Utils::logToFile(logfile, "1.2");
-	CMinionManager* MinionManager = *(CMinionManager**)(Globals::BaseAddress + oMinionList);
+	CObjectManager* MinionManager = *(CObjectManager**)(Globals::BaseAddress + oMinionList);
 	//Utils::logToFile(logfile, "1.3");
 
 	//logToFile(logfile, "asdaasdasdasd");

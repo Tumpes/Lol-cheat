@@ -200,6 +200,7 @@
       <Filter>Kiero</Filter>
     </None>
     <None Include=".gitignore" />
+    <None Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kiero\minhook\dll_resources\MinHook.rc">

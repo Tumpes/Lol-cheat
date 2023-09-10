@@ -175,7 +175,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 
 		ImGui::End();
-
 	}
 
 	if (autosmite && Globals::localPlayer->IsAlive()) {

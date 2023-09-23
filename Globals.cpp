@@ -25,13 +25,6 @@ namespace Globals {
 		Vector2 ret = { width, height };
 		return ret;
 	}
-
-	//static void PrintChat_s(const char* message) {
-	//	std::string str(message);
-	//	message = std::regex_replace(message, std::regex("ä"), "");
-	//	PrintChat(BaseAddress + oChatClient, message, 0x2);
-	//}
-
 };
 
 namespace Funcs {

@@ -25,18 +25,15 @@ public:
 
 
 		Object* Minion = this->getMinionByIndex((int)i);
-		if (Minion == nullptr) break;
 		char* pMinionName = Minion->GetName();
-		if (Minion == nullptr) break;
 		std::string str(pMinionName);
-		if (Minion == nullptr) break;
 		Vector3 MinionPos = Minion->GetPos();
 
 
 		Object* me = Globals::localPlayer;
 
 
-		float DistanceToDragon = (float)sqrt(pow((MinionPos.x - me->GetPos().x), 2) + pow((MinionPos.z - me->GetPos().z), 2));
+		float DistanceToDragon = Globals::localPlayer->DistanceToObject(Minion);
 
 		auto it = std::find(Dragons.begin(), Dragons.end(), pMinionName);
 

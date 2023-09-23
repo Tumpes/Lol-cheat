@@ -190,7 +190,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			Vector3 pos = { DragonPos.x, DragonPos.y, DragonPos.z };
 			Vector2 ScreenPos = renderer.WorldToScreen(pos);
 
-			double DistanceToDragon = (double)sqrt(pow((DragonPos.x - Globals::localPlayer->GetPos().x), 2) + pow((DragonPos.z - Globals::localPlayer->GetPos().z), 2));
+			double DistanceToDragon = Globals::localPlayer->DistanceToObject(Dragon);
 
 
 			int key = 0;
@@ -217,8 +217,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui::Begin("##kebab", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings);
 
 	auto draw = ImGui::GetBackgroundDrawList();
-
-
 
 	if (Circle) {
 		for (int i = 0; i < Globals::HeroList->GetListSize(); i++) {
@@ -292,13 +290,13 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				target = attackable[i];
 			}
 		}
-		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay() - 0.010f) {
+		if (target != nullptr && Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackDelay()) {
 			Vector3 pos = target->GetPos();
 			Vector2 screenpos = renderer.WorldToScreen(pos);
 			Funcs::AttackMoveOnPos(screenpos);
 			lastAttack = Funcs::GetGameTime() + Globals::localPlayer->GetAttackWindUp();
 		}
-		else if ( Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() - 0.065f && Funcs::GetGameTime() - lastMove > 0.1f) {
+		else if ( Funcs::GetGameTime() - lastAttack > Globals::localPlayer->GetAttackWindUp() && Funcs::GetGameTime() - lastMove > 0.1f) {
 			//if (Funcs::GetGameTime() <= lastAttack + Globals::localPlayer->GetAttackDelay() && Funcs::GetGameTime() < lastMove) {
 
 			POINT pos;

@@ -33,13 +33,6 @@
 
 
 
-
-
-//#include "SigScan.h"
-
-
-
-
 bool console = false;
 bool dbgToFile = false;
 
@@ -53,7 +46,7 @@ uint64_t __stdcall EjectThread(LPVOID lpParameter) {
 	return 0;
 }
 
-uint64_t WINAPI MainThread(HMODULE hModule) {
+__declspec(dllexport) uint64_t WINAPI MainThread(HMODULE hModule) {
 
 	std::ofstream logfile;
 	logfile.open("log-kebab.txt", std::ios_base::app);
@@ -101,6 +94,8 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 	logfile << "stats: " << *Globals::pMinionListLength << "  " << me << "  " << MinionManager;
 	while (!GetAsyncKeyState(VK_END)) {
 
+		if (!Globals::localPlayer->IsAlive()) { Sleep(50); continue; }
+
 		int gameState = *(int*)(*(uint64_t*)(Globals::BaseAddress + oHudInstance) + 0xB8);
 		bool gameEnded = (bool)(gameState & 0x10000);
 		if (gameEnded) break;
@@ -109,25 +104,39 @@ uint64_t WINAPI MainThread(HMODULE hModule) {
 		Funcs::SendChat("#........#..#..........#....#####....");
 		Funcs::SendChat("#......#......#......#....#..............#..");
 		Funcs::SendChat("#....#.........#..#......#..................");
-		Funcs::SendChat("###.............#...........#####....");
+		Funcs::SendChat("###.............#..........#####....");
 		Funcs::SendChat("#....#............#.......................#..");
 		Funcs::SendChat("#......#..........#........#............#..");
 		Funcs::SendChat("#........#........#..........#####....");
 		Sleep(2000);
 		}
 
+
+
 		if (GetAsyncKeyState(VK_PRIOR)) {
 
-			CObjectManager* Turretlist = *(CObjectManager**)(Globals::BaseAddress + oTurretList);
+			//CObjectManager* Turretlist = *(CObjectManager**)(Globals::BaseAddress + oTurretList);
 
-			for (int i = 0; i < Turretlist->GetListSize(); i++) {
-				Object* Turret = Turretlist->getMinionByIndex(i);
-				Utils::logToFile(logfile, std::to_string(Turret->GetHealth()));
+			//for (int i = 0; i < Turretlist->GetListSize(); i++) {
+			//	Object* Turret = Turretlist->getMinionByIndex(i);
+			//	Utils::logToFile(logfile, std::to_string(Turret->GetHealth()));
+			//}
+
+			
+
+			uint64_t BuffManagerStart = *(uint64_t*)(*(uint64_t*)(Globals::BaseAddress + oLocalPlayer) + 0x27C8);
+			uint64_t BuffManagerEnd = *(uint64_t*)(*(uint64_t*)(Globals::BaseAddress + oLocalPlayer) + 0x27D0);
+
+			//Funcs::PrintChat(BuffManagerStart);
+			//Funcs::PrintChat(BuffManagerEnd);
+			for (uint64_t addr = BuffManagerStart; addr < BuffManagerEnd - 0x20; addr = addr + 0x10) {
+				if (*(uint64_t*)((*(uint64_t*)addr) + 0x10) == 0) continue;
+				const char* name = (const char*)(*(uint64_t*)((*(uint64_t*)addr) + 0x10) + 0x8);
+				std::string strName = std::string(name);
+				Utils::logToFile(logfile, strName);
 			}
 			Sleep(2000);
 		}
-
-		if (!Globals::localPlayer->IsAlive()) { Sleep(50); continue; }
 
 		//uint64_t HudInstance = *(uint64_t*)(Globals::BaseAddress + HudInstance);
 		//uint64_t HudInstanceSpellInfo = *(uint64_t*)(HudInstance + HudInstanceSpellInfo);
@@ -225,7 +234,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, uint64_t reason, LPVOID lpReserved) {
 	switch (reason) {
 	case DLL_PROCESS_ATTACH:
 		myhModule = hModule;
-		DisableThreadLibraryCalls(myhModule);
+		//DisableThreadLibraryCalls(myhModule);
 		_beginthreadex(nullptr, 0, (_beginthreadex_proc_type)MainThread, hModule, 0, nullptr);
 		break;
 	case DLL_PROCESS_DETACH:

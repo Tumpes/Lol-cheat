@@ -112,7 +112,7 @@
 #define oObjPosition 0x220
 #define oObjHealth 0x1058
 #define oObjMaxHealth 0x1070
-#define oObjName 0x35D8
+#define oObjName 0x35E0
 #define oObjAtkRange 0x16B4
 #define oObjVisible 0x310
 #define oObjTeam 0x3C

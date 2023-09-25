@@ -1,5 +1,4 @@
 #include "menu.h"
-#include <io.h>
 
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef HRESULT(__stdcall* ResizeBuffers) (IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);
@@ -70,21 +69,23 @@ ImGuiKey GetPressedKey() {
 	return pressedkey;
 }
 
+void shutdown() {
+	Funcs::PrintChat(u8"--- H\u00e4kit pois ---"); // Häkit pois
+	kiero::shutdown();
+}
+
 bool init = false;
 bool menuOpen = false;
 bool keyPressed = false;
-bool Circle = false;
-float oldgametime;
-bool autosmite;
-bool CoolDownToggle;
-bool Orbwalker;
 bool Waitingmouseclick;
 bool Waitingmouseorbwalker;
 float lastAttack = 0.0f;
 float lastMove = 0.0f;
+float oldgametime;
 Object* me = Globals::localPlayer;
 
 POINT originalPos = {};
+
 std::chrono::steady_clock::time_point lastKeyPressTime = std::chrono::steady_clock::now();
 
 HRESULT __stdcall hkResizeBuffers(IDXGISwapChain* pSwapChain, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags)
@@ -163,26 +164,46 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::SetNextWindowSize(ImVec2(150.0f, 140.0f), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowPos(ImVec2(25, 25));
 
-		ImGui::Checkbox("Show Attack Range", &Circle);
-		ImGui::Checkbox("Autosmite", &autosmite);
-		ImGui::Checkbox("Show Cooldowns (not enemy)", &CoolDownToggle);
-		ImGui::Checkbox("Orbwalker", &Orbwalker);
+		ImGui::Checkbox("Show Attack Range", &Config::CircleToggle);
+		ImGui::Checkbox("Autosmite", &Config::AutosmiteToggle);
+		ImGui::Checkbox("Show Cooldowns (not enemy)", &Config::CoolDownToggle);
+		ImGui::Checkbox("Orbwalker", &Config::OrbwalkerToggle);
 		ImGui::SameLine();
 		ImGui::Text(" Key");
 		ImGui::SameLine();
-		if (ImGui::Button(ImGui::GetKeyName(Config::OrbwalkKey)) & 1) {
-			Config::OrbwalkKey = GetPressedKey();
+		ImGui::Button(ImGui::GetKeyName(Config::OrbwalkKey));
+
+		if (ImGui::IsItemHovered()) {
+			ImGuiKey Pressedkey = GetPressedKey();
+			if (Pressedkey == ImGuiKey_Escape) {
+				Config::OrbwalkKey = ImGuiKey_None;
+			}
+
+			else if (Pressedkey != ImGuiKey_None) {
+				Config::OrbwalkKey = GetPressedKey();
+			}
+		}
+
+		if (ImGui::Button("KYS banner")) {
+			{
+					Funcs::SendChat("#........#..#..........#....#####....");
+					Funcs::SendChat("#......#......#......#....#..............#..");
+					Funcs::SendChat("#....#.........#..#......#..................");
+					Funcs::SendChat("###.............#..........#####....");
+					Funcs::SendChat("#....#............#.......................#..");
+					Funcs::SendChat("#......#..........#........#............#..");
+					Funcs::SendChat("#........#........#..........#####....");
+					}
 		}
 
 		ImGui::End();
 	}
 
-	if (autosmite && Globals::localPlayer->IsAlive()) {
-		//if (autosmite) {
+	if (Config::AutosmiteToggle && Globals::localPlayer->IsAlive()) { //  && Globals::localPlayer->IsAlive()
 
 		uint64_t DragonIndex = Globals::MinionList->GetDragonIndex();
 
-		if (DragonIndex != 0xDEADBEEFF00D && Utils::GetSmiteDamage() != 0) {
+		if (DragonIndex != 0xDEADBEEF && Utils::GetSmiteDamage() != 0) {
 
 			Object* Dragon = Globals::MinionList->getMinionByIndex((int)DragonIndex);
 			Vector3 DragonPos = Dragon->GetPos();
@@ -218,7 +239,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 	auto draw = ImGui::GetBackgroundDrawList();
 
-	if (Circle) {
+	if (Config::CircleToggle) {
 		for (int i = 0; i < Globals::HeroList->GetListSize(); i++) {
 			Object* Hero = Globals::HeroList->getMinionByIndex(i);
 			if (Hero == Globals::localPlayer) DrawCircle(draw, Hero->GetPos(), Hero->GetRealAttackRange(), 0, 100, IM_COL32(255, 0, 0, 255), 1);
@@ -242,7 +263,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 	}
 
-	if (CoolDownToggle) {
+	if (Config::CoolDownToggle) {
 
 		for (int i = 0; i < Globals::HeroList->GetListSize(); i++) {
 			Object* Hero = Globals::HeroList->getMinionByIndex(i);
@@ -267,7 +288,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		}
 	}
 
-	if (Orbwalker && Globals::localPlayer->CanAttack() && ImGui::IsKeyDown(Config::OrbwalkKey)) {
+	if (Config::OrbwalkerToggle && Globals::localPlayer->CanAttack() && ImGui::IsKeyDown(Config::OrbwalkKey)) {
 
 		std::vector<Object*> attackable;
 
@@ -309,6 +330,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			lastMove = Funcs::GetGameTime() + 0.005f;
 		}
 
+	}
+
+	if (GetAsyncKeyState(VK_END)) {
+		shutdown();
 	}
 
 

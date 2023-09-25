@@ -19,7 +19,7 @@ public:
 
 	inline uint64_t GetDragonIndex() {
 
-	uint64_t DragonIndex = 0xDEADBEEFF00D;
+	uint64_t DragonIndex = 0xDEADBEEF;
 	const std::vector<std::string> Dragons{ "SRU_Dragon_Air", "SRU_Dragon_Earth", "SRU_Dragon_Water", "SRU_Dragon_Fire", "SRU_Dragon_Hextech", "SRU_Dragon_Chemtech", "SRU_Baron", "SRU_RiftHerald", "SRU_Dragon_Elder" };
 	for (uint64_t i = 0; i < *Globals::pMinionListLength; i++) {
 

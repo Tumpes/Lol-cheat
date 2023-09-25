@@ -41,8 +41,6 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 extern bool init;
 extern bool menuOpen;
 extern bool keyPressed;
-extern bool Circle;
-extern bool CoolDownToggle;
 extern float size;
 extern float oldgametime;
 extern bool Waitingmouseclick;
@@ -52,8 +50,6 @@ extern int orbwalkKey;
 extern bool Waitingmouseorbwalker;
 
 extern POINT originalPos;
-
-extern std::chrono::steady_clock::time_point lastKeyPressTime;
 
 extern void DrawCircle(ImDrawList* canvas, const Vector3& worldPos, float radius, bool filled, int numPoints, ImColor color, float thickness);
 

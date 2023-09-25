@@ -6,4 +6,8 @@
 
 namespace Config {
 	extern ImGuiKey OrbwalkKey;
+	extern bool CircleToggle;
+	extern bool AutosmiteToggle;
+	extern bool CoolDownToggle;
+	extern bool OrbwalkerToggle;
 }
